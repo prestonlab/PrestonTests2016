@@ -9,32 +9,40 @@ using System.Text;
 
 public class Logic : MonoBehaviour {
 
-    // Helper
-
-    // Shorthand for Debug.Log(o)
-    private void l(object o){
-        Debug.Log(o);
-    }
-
     // Coroutines
 
     public GameObject Environments = null;
     public GameObject CanvasCoord = null;
 
+    private bool fplayerfoundtarget = false;
+
+    // Callback given to Triggers / Objects to let our guy know we're done
+    private void TriggerCallback(){
+        fplayerfoundtarget = true;
+    }
+
+    private object OnFindTarget(){
+        print("GOOD JOB U FOUND TARGET");
+        fplayerfoundtarget = false;
+        // Freeze controls
+        // TODO
+        return new WaitForSeconds(2); // XXX Post wait time, not in Scene. Should it be? Or should it be 0 always?
+    }
+
     public IEnumerator RunScene(Scene s){
         // Show the gray screen
-        l("RunScene(): Starting");
+        print("RunScene(): Starting");
 
         CanvasCoord.SendMessage("ShowGray");
-        l("RunScene(): Enabled grayscreen");
+        print("RunScene(): Enabled grayscreen");
 
         CanvasCoord.SendMessage("ShowImage", s.objShowIndex);
-        l(String.Format("RunScene(): Enabled Image {0}", s.objShowIndex));
+        print(String.Format("RunScene(): Enabled Image {0}", s.objShowIndex));
 
         yield return new WaitForSeconds(s.showTime);
 
         CanvasCoord.SendMessage("HideImage");
-        l(String.Format("RunScene(): Disabled Image {0}", s.objShowIndex));
+        print(String.Format("RunScene(): Disabled Image {0}", s.objShowIndex));
 
         CanvasCoord.SendMessage("ShowPlus");
 
@@ -42,23 +50,38 @@ public class Logic : MonoBehaviour {
 
         CanvasCoord.SendMessage("HidePlus");
         CanvasCoord.SendMessage("HideGray");
-        l("RunScene(): Disabled grayscreen");
+        print("RunScene(): Disabled grayscreen");
 
         GameObject curenv = Environments.transform.GetChild(s.envIndex).gameObject;
 
         curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
-        curenv.BroadcastMessage("ActivateObjTriggerAtIndex", s.objSpawnIndex);
+        curenv.BroadcastMessage("ActivateObjTriggerAtIndex", new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback));
         curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
 
-        yield return new WaitForSeconds(s.envTime);
+        float curtime = Time.time;
+        yield return new WaitUntil(() => fplayerfoundtarget || Time.time - curtime >= s.envTime);
+
+        print(String.Format("RunScene(): fplayerfoundtarget: '{0}'", fplayerfoundtarget));
+
+        if(fplayerfoundtarget){
+            yield return OnFindTarget();
+        }else{
+            print("Go find the target!!!!");
+            // Freeze player controls
+            // TODO
+            // Turn player towards object
+            // TODO
+            // Wait Until they find the object
+            yield return new WaitUntil(() => fplayerfoundtarget);
+
+            yield return OnFindTarget();
+        }
 
         curenv.BroadcastMessage("RemovePlayer");
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
 
-        // TODO Wait for player get to the thing
-
-        l("RunScene(): Done");
+        print("RunScene(): Done");
     }
 
     public IEnumerator RunAllScenes(IEnumerable<Scene> scenes){
