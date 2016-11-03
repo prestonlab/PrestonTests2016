@@ -68,7 +68,8 @@ public class Logic : MonoBehaviour {
         }else{
             print("Go find the target!!!!");
             // Freeze player controls
-            // TODO
+            GameObject player = GameObject.FindWithTag("Player");
+            player.SendMessage("FreezeControls");
             // Turn player towards object
             // TODO
             // Wait Until they find the object
@@ -117,8 +118,6 @@ public class Logic : MonoBehaviour {
         string configjson = File.ReadAllText(jsonpath);
         Config config = Config.CreateFromJSON(configjson);
 
-        // Maybe create an object instead of using a coroutine? How do you express "wait forever until..." with a coroutine?
-        // JK LOL Here it is: https://docs.unity3d.com/ScriptReference/WaitUntil.html
         StartCoroutine("RunAllScenes", config.scenes);
 	}
 }
