@@ -1,0 +1,27 @@
+TODO: 11/3/16
+No cones in inf plane, just "objects"
+Different colors for mountains in ea place w/ hills
+    Mountains
+        Red, Orange, Yellow, Green (Different from grass green, bright)
+    Desert
+        Blue, Purple, Pink, White
+    Very saturated
+
+Desert should be square, not circle
+
+Movement from end to end is ~10 seconds
+
+
+See grey screen for X seconds with object on screen
+    Object is specifiable
+See grey screen for Y seconds with plus sign
+Enter environment at a spawn, for at most Z seconds
+    Chooseable:
+        Object spawn position
+        Spawn pos of player
+        Which of the 4 landmarks are active
+On timeout or Trigger Action
+    Turn player slowly towards real object spawn
+    They have inf time to walk into the spawn to go to next scene
+
+
