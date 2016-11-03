@@ -67,11 +67,17 @@ public class Logic : MonoBehaviour {
             yield return OnFindTarget();
         }else{
             print("Go find the target!!!!");
+
             // Freeze player controls
             GameObject player = GameObject.FindWithTag("Player");
-            player.SendMessage("FreezeControls");
+            player.SendMessage("DisableInput");
+
             // Turn player towards object
-            // TODO
+            foreach(object o in E.YieldFrom((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards()))
+                yield return o;
+
+            player.SendMessage("EnableInput");
+
             // Wait Until they find the object
             yield return new WaitUntil(() => fplayerfoundtarget);
 

@@ -15,12 +15,46 @@ public class PlayerAction : MonoBehaviour {
         fDidAction = Input.GetKeyDown("space");
 	}
 
+    // Coroutines
+    readonly float lookslerptime = 2.0f;
+    public IEnumerator PlayerLookTowards(){
+        Transform child = transform.GetChild(0);
+
+        Quaternion initrot = transform.rotation;
+        Quaternion childinitrot = child.rotation;
+
+        Quaternion goalrot = Quaternion.LookRotation(
+                GameObject.FindWithTag("GoalTrigger").transform.position - transform.position);
+        // TODO Goalrot for child???
+
+        float curtime = Time.time;
+        while(Time.time - curtime < lookslerptime){
+            float prop = (Time.time - curtime) / lookslerptime;
+            transform.rotation = Quaternion.Slerp(initrot, goalrot, prop);
+            child.rotation = Quaternion.Slerp(initrot, goalrot, prop);
+            yield return null;
+        }
+    }
+
     // Messages
 
-    public void FreezeControls(){
+    public void DisableInput(){
         GameObject go = transform.gameObject;
-        (go.GetComponent<CharacterController>() as CharacterController).enabled = false;
         (go.GetComponent<FirstPersonController>() as FirstPersonController).enabled = false;
     }
 
+    public void EnableInput(){
+        GameObject go = transform.gameObject;
+        (go.GetComponent<FirstPersonController>() as FirstPersonController).enabled = true;
+    }
+
+    public void FreezePlayer(){
+        GameObject go = transform.gameObject;
+        (go.GetComponent<CharacterController>() as CharacterController).enabled = false;
+    }
+
+    public void UnFreezePlayer(){
+        GameObject go = transform.gameObject;
+        (go.GetComponent<CharacterController>() as CharacterController).enabled = true;;
+    }
 }
