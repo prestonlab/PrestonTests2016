@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 public class SpawnLogic : MonoBehaviour {
     public Transform playergo;
     private List<Transform> spawnLocs = null;
+
+    private GameObject trackedplayer = null;
 
 	void Start() {
         spawnLocs = new List<Transform>();
@@ -23,6 +23,13 @@ public class SpawnLogic : MonoBehaviour {
     // Spawns the player at an index in [0-7] inclusive
     void SpawnPlayerAtIndex(int index){
         Debug.Assert(0 <= index && index <= spawnLocs.Count);
-        Instantiate(playergo, spawnLocs[index].position, Quaternion.identity);
+        Debug.Assert(trackedplayer == null);
+        Transform loc = spawnLocs[index];
+        trackedplayer = ((Transform)Instantiate(playergo, loc.position, loc.rotation)).gameObject;
+    }
+
+    // Kills the player
+    void RemovePlayer(){
+        Destroy(trackedplayer);
     }
 }

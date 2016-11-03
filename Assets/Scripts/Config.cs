@@ -14,7 +14,7 @@ public class Scene {
     public float greyScreenTime; // How long the grey screen is shown, seconds
 
     public int envIndex; // The environment the player is in
-    public float envTime; // The environment the player is in
+    public float envTime; // The time the player is in the environment
     public int objSpawnIndex; // Index of position object spawns in
     public int playerSpawnIndex; // Index of position player spawns in
     public int landmarkSpawnIndex; // Index of position landmark spawns in

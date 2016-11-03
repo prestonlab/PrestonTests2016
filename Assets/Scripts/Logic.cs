@@ -18,6 +18,7 @@ public class Logic : MonoBehaviour {
 
     // Coroutines
 
+    public GameObject Environments = null;
     public GameObject CanvasCoord = null;
 
     public IEnumerator RunScene(Scene s){
@@ -42,6 +43,20 @@ public class Logic : MonoBehaviour {
         CanvasCoord.SendMessage("HidePlus");
         CanvasCoord.SendMessage("HideGray");
         l("RunScene(): Disabled grayscreen");
+
+        GameObject curenv = Environments.transform.GetChild(s.envIndex).gameObject;
+
+        curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
+        curenv.BroadcastMessage("ActivateObjTriggerAtIndex", s.objSpawnIndex);
+        curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
+
+        yield return new WaitForSeconds(s.envTime);
+
+        curenv.BroadcastMessage("RemovePlayer");
+        curenv.BroadcastMessage("DeactiveateTriggers");
+        curenv.BroadcastMessage("HideLandmark");
+
+        // TODO Wait for player get to the thing
 
         l("RunScene(): Done");
     }
