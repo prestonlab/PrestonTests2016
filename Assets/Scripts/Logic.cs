@@ -9,22 +9,41 @@ using System.Text;
 
 public class Logic : MonoBehaviour {
 
+    // Helper
+
+    // Shorthand for Debug.Log(o)
+    private void l(object o){
+        Debug.Log(o);
+    }
+
     // Coroutines
 
     public GameObject CanvasCoord = null;
 
-    public IEnumerator RunScene(Scene scene){
+    public IEnumerator RunScene(Scene s){
         // Show the gray screen
-        Debug.Log("RunScene(): Starting");
+        l("RunScene(): Starting");
 
-        CanvasCoord.SendMessage("GrayOn");
-        Debug.Log("RunScene(): Enabled grayscreen");
+        CanvasCoord.SendMessage("ShowGray");
+        l("RunScene(): Enabled grayscreen");
 
-        yield return new WaitForSeconds(2.0f);
-        CanvasCoord.SendMessage("GrayOff");
-        Debug.Log("RunScene(): Disabled grayscreen");
+        CanvasCoord.SendMessage("ShowImage", s.objShowIndex);
+        l(String.Format("RunScene(): Enabled Image {0}", s.objShowIndex));
 
-        Debug.Log("RunScene(): Done");
+        yield return new WaitForSeconds(s.showTime);
+
+        CanvasCoord.SendMessage("HideImage");
+        l(String.Format("RunScene(): Disabled Image {0}", s.objShowIndex));
+
+        CanvasCoord.SendMessage("ShowPlus");
+
+        yield return new WaitForSeconds(s.greyScreenTime);
+
+        CanvasCoord.SendMessage("HidePlus");
+        CanvasCoord.SendMessage("HideGray");
+        l("RunScene(): Disabled grayscreen");
+
+        l("RunScene(): Done");
     }
 
     public IEnumerator RunAllScenes(IEnumerable<Scene> scenes){
