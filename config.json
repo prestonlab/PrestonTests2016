@@ -1,0 +1,15 @@
+{
+    "scenes" : [
+        {
+            "objShowIndex" : 0,
+            "showTime" : 2,
+            "greyScreenTime" : 4,
+            "envIndex" : 0,
+            "envTime" : 15,
+            "objSpawnIndex" : 0,
+            "playerSpawnIndex" : 0,
+            "landmarkSpawnIndex" : 0
+        }
+    ]
+}
+
