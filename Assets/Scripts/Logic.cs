@@ -11,30 +11,34 @@ public class Logic : MonoBehaviour {
 
     // Coroutines
 
+    public GameObject CanvasCoord = null;
+
     public IEnumerator RunScene(Scene scene){
+        // Show the gray screen
+        Debug.Log("RunScene(): Starting");
+
+        CanvasCoord.SendMessage("GrayOn");
+        Debug.Log("RunScene(): Enabled grayscreen");
+
         yield return new WaitForSeconds(2.0f);
-        Debug.Log("A lmao");
-        yield return new WaitForSeconds(2.0f);
-        yield return new WaitForSeconds(2.0f);
+        CanvasCoord.SendMessage("GrayOff");
+        Debug.Log("RunScene(): Disabled grayscreen");
+
+        Debug.Log("RunScene(): Done");
     }
 
     public IEnumerator RunAllScenes(IEnumerable<Scene> scenes){
         int counter = 0;
         foreach(Scene s in scenes){
-            Debug.Log(String.Format("Running scene number: {0}", counter));
+            Debug.Log(String.Format("RunAllScenes(): Running scene number: {0}", counter));
 
-            // "Yield from" RunScene() so RunAllScenes() is blocked for ea scene
-            var iter = RunScene(s);
-            while(iter.MoveNext())
-                yield return iter.Current;
+            foreach(object o in E.YieldFrom(RunScene(s)))
+                yield return o;
 
-            Debug.Log(String.Format("Done running scene number: {0}", counter));
+            Debug.Log(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
             counter += 1;
 
             yield return new WaitForSeconds(2.0f);
-
-            // Scene cleanup goes here
-            // ...
         }
         Debug.Log("RunAllScenes(): Done running all scenes!");
     }
