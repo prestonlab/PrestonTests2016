@@ -15,7 +15,9 @@ public class ObjTrigger : MonoBehaviour {
         transform.gameObject.SetActive(false);
     }
 
-    public void OnTriggerEnter(Collider other) {
-        callback();
+    public void OnTriggerStay(Collider other) {
+        if(other.gameObject.GetComponent<PlayerAction>().IsActive){
+            callback();
+        }
     }
 }
