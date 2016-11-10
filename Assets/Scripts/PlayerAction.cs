@@ -24,16 +24,16 @@ public class PlayerAction : MonoBehaviour {
     // Coroutines
     readonly float lookslerptime = 2.0f;
     public IEnumerator PlayerLookTowards(){
+        Vector3 goalpos = GameObject.FindWithTag("GoalTrigger").transform.position - transform.position;
+        Quaternion goalrot = Quaternion.LookRotation(goalpos);
+        Quaternion goalrotflat = Quaternion.Euler(0, goalrot.eulerAngles.y, 0);
+
         Quaternion initrot = transform.rotation;
-
-        Quaternion goalrot = Quaternion.LookRotation(
-                GameObject.FindWithTag("GoalTrigger").transform.position - transform.position);
-
         float curtime = Time.time;
         while(Time.time - curtime < lookslerptime){
             float prop = (Time.time - curtime) / lookslerptime;
-            transform.rotation = Quaternion.Slerp(initrot, goalrot, prop);
-            child.rotation = Quaternion.Slerp(initrot, goalrot, prop);
+            transform.rotation = Quaternion.Slerp(initrot, goalrotflat, prop);
+            child.rotation = Quaternion.Slerp(initrot, goalrotflat, prop);
             yield return null;
         }
     }

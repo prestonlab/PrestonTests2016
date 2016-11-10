@@ -2,6 +2,16 @@
     "scenes" : [
         {
             "objShowIndex" : 0,
+            "showTime" : 0,
+            "greyScreenTime" : 0,
+            "envIndex" : 1,
+            "envTime" : 3,
+            "objSpawnIndex" : 0,
+            "playerSpawnIndex" : 0,
+            "landmarkSpawnIndex" : 0
+        },
+        {
+            "objShowIndex" : 0,
             "showTime" : 2,
             "greyScreenTime" : 4,
             "envIndex" : 0,
