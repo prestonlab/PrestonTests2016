@@ -43,6 +43,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			camera.localRotation = tempCamRot;
         }
 
+        // Unused
         public void LookRotationMouse(Transform character, Transform camera)
         {
             float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;

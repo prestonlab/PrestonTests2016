@@ -11,6 +11,12 @@ public class PlayerAction : MonoBehaviour {
 
     public bool IsActive {get{return fDidAction;}}
 
+    private Transform child;
+
+    void Start(){
+        child = transform.GetChild(0);
+    }
+
 	void Update () {
         fDidAction = Input.GetKeyDown("space");
 	}
@@ -18,14 +24,10 @@ public class PlayerAction : MonoBehaviour {
     // Coroutines
     readonly float lookslerptime = 2.0f;
     public IEnumerator PlayerLookTowards(){
-        Transform child = transform.GetChild(0);
-
         Quaternion initrot = transform.rotation;
-        Quaternion childinitrot = child.rotation;
 
         Quaternion goalrot = Quaternion.LookRotation(
                 GameObject.FindWithTag("GoalTrigger").transform.position - transform.position);
-        // TODO Goalrot for child???
 
         float curtime = Time.time;
         while(Time.time - curtime < lookslerptime){
