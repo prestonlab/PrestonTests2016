@@ -6,6 +6,9 @@ using System;
 
 [Serializable]
 public class Scene {
+    // How this scene will be used
+    // Can be either: normal, explore, searchfind
+    public string mode;
     // Index of the object we want to show to the player
     // An object is a 2d rendering of a nondescript, abstract geometric model.
     // It will be displayed on a grey screen

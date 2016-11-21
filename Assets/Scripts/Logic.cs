@@ -29,7 +29,8 @@ public class Logic : MonoBehaviour {
         return new WaitForSeconds(2); // XXX Post wait time, not in Scene. Should it be? Or should it be 0 always?
     }
 
-    public IEnumerator RunScene(Scene s){
+
+    public IEnumerator RunNormalScene(Scene s){
         // Show the gray screen
         print("RunScene(): Starting");
 
@@ -89,6 +90,34 @@ public class Logic : MonoBehaviour {
         curenv.BroadcastMessage("HideLandmark");
 
         print("RunScene(): Done");
+    }
+
+    public IEnumerator RunExploreScene(Scene s){
+        return null;
+    }
+
+    public IEnumerator RunSearchfindScene(Scene s){
+        return null;
+    }
+
+    public IEnumerator RunScene(Scene s){
+        switch(s.mode){
+            case "normal":
+                foreach(object o in E.YieldFrom(RunNormalScene(s)))
+                    yield return o;
+                break;
+            case "explore":
+                foreach(object o in E.YieldFrom(RunExploreScene(s)))
+                    yield return o;
+                break;
+            case "searchfind":
+                foreach(object o in E.YieldFrom(RunSearchfindScene(s)))
+                    yield return o;
+                break;
+            default:
+                System.Diagnostics.Debug.Assert(false, String.Format("mode is invalid: '{0}'", s.mode));
+                return false;
+        }
     }
 
     public IEnumerator RunAllScenes(IEnumerable<Scene> scenes){

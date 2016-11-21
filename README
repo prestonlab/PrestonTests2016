@@ -2,9 +2,9 @@ TODO: 11/3/16
 No cones in inf plane, just "objects"
 Different colors for mountains in ea place w/ hills
     Mountains
-        Red, Orange, Yellow, Green (Different from grass green, bright)
+        Blue, Yellow, Pink, Teal
     Desert
-        Blue, Purple, Pink, White
+        Red, Orange, Green, Purple
     Very saturated
 
 Desert should be square, not circle
@@ -27,9 +27,10 @@ On timeout or Trigger Action
 Nov 3: 2:11pm
 Placed in environment where they can explore for 2-3 mins, no objects.
 
+mode 2
 In environment, obj in the world, go get it, repeat
 
-Saturate colors more
+DONE Saturate colors more
 
 Text to json thing as part of bash script
 
