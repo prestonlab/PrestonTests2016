@@ -29,35 +29,45 @@ public class Logic : MonoBehaviour {
         return new WaitForSeconds(2); // XXX Post wait time, not in Scene. Should it be? Or should it be 0 always?
     }
 
-
-    public IEnumerator RunNormalScene(Scene s){
-        // Show the gray screen
-        print("RunScene(): Starting");
-
+    // objShowIndex: index of object to show
+    // showTime: time we show the object
+    // greyScreenTime: time we show the plus
+    private IEnumerator ShowGrayScreen(int objShowIndex, float showTime, float greyScreenTime){
         CanvasCoord.SendMessage("ShowGray");
         print("RunScene(): Enabled grayscreen");
 
-        CanvasCoord.SendMessage("ShowImage", s.objShowIndex);
-        print(String.Format("RunScene(): Enabled Image {0}", s.objShowIndex));
+        CanvasCoord.SendMessage("ShowImage", objShowIndex);
+        print(String.Format("RunScene(): Enabled Image {0}", objShowIndex));
 
-        yield return new WaitForSeconds(s.showTime);
+        yield return new WaitForSeconds(showTime);
 
         CanvasCoord.SendMessage("HideImage");
-        print(String.Format("RunScene(): Disabled Image {0}", s.objShowIndex));
+        print(String.Format("RunScene(): Disabled Image {0}", objShowIndex));
 
         CanvasCoord.SendMessage("ShowPlus");
 
-        yield return new WaitForSeconds(s.greyScreenTime);
+        yield return new WaitForSeconds(greyScreenTime);
 
         CanvasCoord.SendMessage("HidePlus");
         CanvasCoord.SendMessage("HideGray");
         print("RunScene(): Disabled grayscreen");
 
+    }
+
+    public IEnumerator RunNormalScene(Scene s){
+        print("RunScene(): Starting");
+
+        foreach(object o in E.YieldFrom(ShowGrayScreen(s.objShowIndex, s.showTime, s.greyScreenTime)))
+            yield return o;
+
+        // Generic GrayScreen Logic
         GameObject curenv = Environments.transform.GetChild(s.envIndex).gameObject;
 
         curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
         curenv.BroadcastMessage("ActivateObjTriggerAtIndex", new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback));
         curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
+
+        // Specific scene logic
 
         float curtime = Time.time;
         yield return new WaitUntil(() => fplayerfoundtarget || Time.time - curtime >= s.envTime);
@@ -92,15 +102,19 @@ public class Logic : MonoBehaviour {
         print("RunScene(): Done");
     }
 
+    // Placed in environment where they can explore for 2-3 mins, no objects.
     public IEnumerator RunExploreScene(Scene s){
+        System.Diagnostics.Debug.Assert(false, "Not Implemented");
         return null;
     }
 
-    public IEnumerator RunSearchfindScene(Scene s){
+    public IEnumerator RunSearchFindScene(Scene s){
+        System.Diagnostics.Debug.Assert(false, "Not Implemented");
         return null;
     }
 
     public IEnumerator RunScene(Scene s){
+        // TODO Maybe refactor to class with inheritance?
         switch(s.mode){
             case "normal":
                 foreach(object o in E.YieldFrom(RunNormalScene(s)))
@@ -111,7 +125,7 @@ public class Logic : MonoBehaviour {
                     yield return o;
                 break;
             case "searchfind":
-                foreach(object o in E.YieldFrom(RunSearchfindScene(s)))
+                foreach(object o in E.YieldFrom(RunSearchFindScene(s)))
                     yield return o;
                 break;
             default:
