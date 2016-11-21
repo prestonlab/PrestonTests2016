@@ -29,20 +29,25 @@ public class Logic : MonoBehaviour {
         return new WaitForSeconds(2); // XXX Post wait time, not in Scene. Should it be? Or should it be 0 always?
     }
 
+    // Helper
+    private GameObject GetEnvGO(GameObject environments, int envIndex){
+        return environments.transform.GetChild(envIndex).gameObject;
+    }
+
     // objShowIndex: index of object to show
     // showTime: time we show the object
     // greyScreenTime: time we show the plus
     private IEnumerator ShowGrayScreen(int objShowIndex, float showTime, float greyScreenTime){
         CanvasCoord.SendMessage("ShowGray");
-        print("RunScene(): Enabled grayscreen");
+        print("ShowGrayScreen(): Enabled grayscreen");
 
         CanvasCoord.SendMessage("ShowImage", objShowIndex);
-        print(String.Format("RunScene(): Enabled Image {0}", objShowIndex));
+        print(String.Format("ShowGrayScreen(): Enabled Image {0}", objShowIndex));
 
         yield return new WaitForSeconds(showTime);
 
         CanvasCoord.SendMessage("HideImage");
-        print(String.Format("RunScene(): Disabled Image {0}", objShowIndex));
+        print(String.Format("ShowGrayScreen(): Disabled Image {0}", objShowIndex));
 
         CanvasCoord.SendMessage("ShowPlus");
 
@@ -50,8 +55,7 @@ public class Logic : MonoBehaviour {
 
         CanvasCoord.SendMessage("HidePlus");
         CanvasCoord.SendMessage("HideGray");
-        print("RunScene(): Disabled grayscreen");
-
+        print("ShowGrayScreen(): Disabled grayscreen");
     }
 
     public IEnumerator RunNormalScene(Scene s){
@@ -61,7 +65,7 @@ public class Logic : MonoBehaviour {
             yield return o;
 
         // Generic GrayScreen Logic
-        GameObject curenv = Environments.transform.GetChild(s.envIndex).gameObject;
+        GameObject curenv = GetEnvGO(Environments, s.envIndex);
 
         curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
         curenv.BroadcastMessage("ActivateObjTriggerAtIndex", new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback));
@@ -104,8 +108,16 @@ public class Logic : MonoBehaviour {
 
     // Placed in environment where they can explore for 2-3 mins, no objects.
     public IEnumerator RunExploreScene(Scene s){
-        System.Diagnostics.Debug.Assert(false, "Not Implemented");
-        return null;
+        print("RunExploreScene(): Starting");
+
+        // Doesn't have GrayScreen
+
+        GameObject curenv = GetEnvGO(Environments, s.envIndex);
+        curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
+        yield return new WaitForSeconds(s.envTime);
+        curenv.BroadcastMessage("RemovePlayer");
+
+        print("RunExploreScene(): Done");
     }
 
     public IEnumerator RunSearchFindScene(Scene s){
