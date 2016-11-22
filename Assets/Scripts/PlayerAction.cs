@@ -13,8 +13,14 @@ public class PlayerAction : MonoBehaviour {
 
     private Transform child;
 
+    private FirstPersonController fpscont; // Enable/Disable input
+    private CharacterController charcont; // Freeze/Unfreeze player
+
     void Start(){
         child = transform.GetChild(0);
+        GameObject go = transform.gameObject;
+        fpscont = (FirstPersonController)go.GetComponent<FirstPersonController>();
+        charcont = (CharacterController)go.GetComponent<CharacterController>();
     }
 
 	void Update () {
@@ -41,22 +47,18 @@ public class PlayerAction : MonoBehaviour {
     // Messages
 
     public void DisableInput(){
-        GameObject go = transform.gameObject;
-        (go.GetComponent<FirstPersonController>() as FirstPersonController).enabled = false;
+        fpscont.enabled = false;
     }
 
     public void EnableInput(){
-        GameObject go = transform.gameObject;
-        (go.GetComponent<FirstPersonController>() as FirstPersonController).enabled = true;
+        fpscont.enabled = true;
     }
 
     public void FreezePlayer(){
-        GameObject go = transform.gameObject;
-        (go.GetComponent<CharacterController>() as CharacterController).enabled = false;
+        charcont.enabled = false;
     }
 
     public void UnFreezePlayer(){
-        GameObject go = transform.gameObject;
-        (go.GetComponent<CharacterController>() as CharacterController).enabled = true;;
+        charcont.enabled = true;
     }
 }

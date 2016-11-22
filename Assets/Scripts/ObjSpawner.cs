@@ -4,15 +4,21 @@ using System.Collections;
 
 public class ObjSpawner : MonoBehaviour {
     // Controller for all objects, by which I mean triggers
+    // Those objects can also have sprites that always face the camera on them
 
     // Message passing class
     public class TriggerInfo {
-        public TriggerInfo(int i, Action cb){
+        public TriggerInfo(int i, Action cb, int? si){
             index = i;
             callback = cb;
+            spriteIndex = si;
         }
-        public readonly int index;
-        public readonly Action callback;
+        public readonly int index; // Index of our children to activate
+        public readonly Action callback; // Callback object will call when its found
+        public readonly int? spriteIndex; // Show the billboard if not null
+        public override String ToString(){
+            return String.Format("index: {0}, callback: {1}, spriteIndex: {2}", index, callback, spriteIndex);
+        }
     }
 
     private GameObject lastactivated = null;
@@ -21,7 +27,7 @@ public class ObjSpawner : MonoBehaviour {
         GameObject go = transform.GetChild(ti.index).gameObject;
         lastactivated = go;
         go.SetActive(true);
-        go.SendMessage("SetInfo", ti.callback);
+        go.SendMessage("SetInfo", ti);
     }
 
     public void DeactiveateTriggers(){

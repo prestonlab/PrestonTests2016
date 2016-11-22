@@ -16,6 +16,10 @@ public class Logic : MonoBehaviour {
 
     private bool fplayerfoundtarget = false;
 
+    private void ResetCallbacks(){
+        fplayerfoundtarget = false;
+    }
+
     // Callback given to Triggers / Objects to let our guy know we're done
     private void TriggerCallback(){
         fplayerfoundtarget = true;
@@ -59,7 +63,7 @@ public class Logic : MonoBehaviour {
     }
 
     public IEnumerator RunNormalScene(Scene s){
-        print("RunScene(): Starting");
+        print("Scene(): Starting");
 
         foreach(object o in E.YieldFrom(ShowGrayScreen(s.objShowIndex, s.showTime, s.greyScreenTime)))
             yield return o;
@@ -68,7 +72,8 @@ public class Logic : MonoBehaviour {
         GameObject curenv = GetEnvGO(Environments, s.envIndex);
 
         curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
-        curenv.BroadcastMessage("ActivateObjTriggerAtIndex", new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback));
+        curenv.BroadcastMessage("ActivateObjTriggerAtIndex",
+                new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback, null));
         curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
 
         // Specific scene logic
@@ -103,12 +108,12 @@ public class Logic : MonoBehaviour {
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
 
-        print("RunScene(): Done");
+        print("Scene(): Done");
     }
 
     // Placed in environment where they can explore for 2-3 mins, no objects.
     public IEnumerator RunExploreScene(Scene s){
-        print("RunExploreScene(): Starting");
+        print("ExploreScene(): Starting");
 
         // Doesn't have GrayScreen
 
@@ -117,12 +122,40 @@ public class Logic : MonoBehaviour {
         yield return new WaitForSeconds(s.envTime);
         curenv.BroadcastMessage("RemovePlayer");
 
-        print("RunExploreScene(): Done");
+        print("ExploreScene(): Done");
     }
 
+    // In environment, obj in the world, go get it, repeat
     public IEnumerator RunSearchFindScene(Scene s){
-        System.Diagnostics.Debug.Assert(false, "Not Implemented");
-        return null;
+        print("SearchFindScene(): Starting");
+
+        // Doesn't have GrayScreen
+
+        GameObject curenv = GetEnvGO(Environments, s.envIndex);
+        curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
+
+        int counter = 0;
+        foreach(SearchObj so in s.searchObjs){
+            print(String.Format("SearchFindScene(): Player looking for target {0}", counter));
+
+            ObjSpawner.TriggerInfo curti = new ObjSpawner.TriggerInfo(so.objSpawnIndex, TriggerCallback, so.objSpriteIndex);
+            print(String.Format("SearchFindScene(): curTriggerInfo: {0}", curti));
+
+            curenv.BroadcastMessage("ActivateObjTriggerAtIndex", curti);
+
+            yield return new WaitUntil(() => fplayerfoundtarget);
+            ResetCallbacks();
+
+            print("SearchFindScene(): Player found target");
+
+            curenv.BroadcastMessage("DeactiveateTriggers");
+
+            counter += 1;
+        }
+
+        curenv.BroadcastMessage("RemovePlayer");
+
+        print("SearchFindScene(): Done");
     }
 
     public IEnumerator RunScene(Scene s){
@@ -149,30 +182,28 @@ public class Logic : MonoBehaviour {
     public IEnumerator RunAllScenes(IEnumerable<Scene> scenes){
         int counter = 0;
         foreach(Scene s in scenes){
-            Debug.Log(String.Format("RunAllScenes(): Running scene number: {0}", counter));
+            print(String.Format("AllScenes(): Running scene number: {0}", counter));
 
             foreach(object o in E.YieldFrom(RunScene(s)))
                 yield return o;
 
-            Debug.Log(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
+            print(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
             counter += 1;
 
             yield return new WaitForSeconds(2.0f);
         }
-        Debug.Log("RunAllScenes(): Done running all scenes!");
+        print("AllScenes(): Done running all scenes!");
     }
 
     // Init
 
 	void Start () {
         // Read Json file to configure stuff
-        //
 
         string jsonpath = @"config.json";
         if (!File.Exists(jsonpath)){
-            // Just end it all
-            Debug.Assert(false);
             Debug.LogError(String.Format("Couldn't load config file at: {0}", jsonpath));
+            Debug.Assert(false);
             Application.Quit();
         }
 

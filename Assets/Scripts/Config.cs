@@ -5,6 +5,12 @@ using System;
 // https://forum.unity3d.com/threads/how-to-load-an-array-with-jsonutility.375735/
 
 [Serializable]
+public class SearchObj {
+    public int objSpriteIndex; // Sprite of object to show
+    public int objSpawnIndex; // Index for object to spawn at
+}
+
+[Serializable]
 public class Scene {
     // How this scene will be used
     // Can be either: normal, explore, searchfind
@@ -21,6 +27,10 @@ public class Scene {
     public int objSpawnIndex; // Index of position object spawns in
     public int playerSpawnIndex; // Index of position player spawns in
     public int landmarkSpawnIndex; // Index of position landmark spawns in
+    
+    // For searchfind
+    public SearchObj[] searchObjs; // Sprite and Spawn index of ea obj to find
+
 }
 
 // Config is a list of scenes and the player's settings
