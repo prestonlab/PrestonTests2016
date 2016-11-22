@@ -8,7 +8,7 @@ public class ObjSpawner : MonoBehaviour {
 
     // Message passing class
     public class TriggerInfo {
-        public TriggerInfo(int i, Action cb, int? si){
+        public TriggerInfo(int i, Action cb, int? si = null){
             index = i;
             callback = cb;
             spriteIndex = si;

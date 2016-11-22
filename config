@@ -1,0 +1,32 @@
+{
+    "scenes" : [
+        {
+            "mode": "searchfind",
+            "objShowIndex" : 0,
+            "showTime" : 2,
+            "greyScreenTime" : 0,
+            "envIndex" : 1,
+            "envTime" : -1,
+            "objSpawnIndex" : -1,
+            "playerSpawnIndex" : 0,
+            "landmarkSpawnIndex" : -1,
+            "searchObjs" : [ 
+                { "objSpriteIndex" : 0, "objSpawnIndex" : 0 },
+                { "objSpriteIndex" : 1, "objSpawnIndex" : 1 }
+            ]
+        },
+        {
+            "mode": "explore",
+            "objShowIndex" : 0,
+            "showTime" : 2,
+            "greyScreenTime" : 2,
+            "envIndex" : 0,
+            "envTime" : 5,
+            "objSpawnIndex" : 0,
+            "playerSpawnIndex" : 0,
+            "landmarkSpawnIndex" : 0,
+            "searchObjs" : []
+        }
+    ]
+}
+

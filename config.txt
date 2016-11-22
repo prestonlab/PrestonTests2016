@@ -1,0 +1,8 @@
+searchfind
+1
+0 1
+0 1
+
+Line 1: Mode, this line determines the other lines
+Line 2: Env index
+Lines 3 and 4: list of sprite index with list of spawn index

@@ -7,6 +7,7 @@ public class LandmarkSpawner : MonoBehaviour {
     }
 
     public void ShowLandmark(int index){
+        print(string.Format("ShowLandmark({0})", index));
         transform.GetChild(index).gameObject.SetActive(true);
     }
 

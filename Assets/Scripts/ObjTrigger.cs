@@ -12,6 +12,7 @@ public class ObjTrigger : MonoBehaviour {
         billboard.enabled = true;
 
         rend = GetComponent<Renderer>();
+        rend.enabled = false;
     }
 
     public void SetSprite(int spriteIndex){
@@ -20,15 +21,15 @@ public class ObjTrigger : MonoBehaviour {
 
     public void SetInfo(ObjSpawner.TriggerInfo ti){
         curcallback = ti.callback;
-        if(ti.spriteIndex != null){
+        if(ti.spriteIndex.HasValue){
             SendMessage("SetSprite", ti.spriteIndex);
-            billboard.enabled = true;
+            rend.enabled = true;
         }
     }
 
     public void ClearInfo(){
         curcallback = null;
-        billboard.enabled = false;
+        rend.enabled = false;
         transform.gameObject.SetActive(false);
     }
 

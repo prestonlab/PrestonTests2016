@@ -9,8 +9,6 @@ using System.Text;
 
 public class Logic : MonoBehaviour {
 
-    // Coroutines
-
     public GameObject Environments = null;
     public GameObject CanvasCoord = null;
 
@@ -78,6 +76,7 @@ public class Logic : MonoBehaviour {
 
         // Specific scene logic
 
+        // TODO we should wait for ANY space press, not just the player pressing space on the target
         float curtime = Time.time;
         yield return new WaitUntil(() => fplayerfoundtarget || Time.time - curtime >= s.envTime);
 
@@ -87,9 +86,9 @@ public class Logic : MonoBehaviour {
             yield return OnFindTarget();
         }else{
             print("Go find the target!!!!");
+            GameObject player = GameObject.FindWithTag("Player");
 
             // Freeze player controls
-            GameObject player = GameObject.FindWithTag("Player");
             player.SendMessage("DisableInput");
 
             // Turn player towards object
@@ -98,7 +97,6 @@ public class Logic : MonoBehaviour {
 
             player.SendMessage("EnableInput");
 
-            // Wait Until they find the object
             yield return new WaitUntil(() => fplayerfoundtarget);
 
             yield return OnFindTarget();
@@ -190,6 +188,7 @@ public class Logic : MonoBehaviour {
             print(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
             counter += 1;
 
+            // Show black screen
             yield return new WaitForSeconds(2.0f);
         }
         print("AllScenes(): Done running all scenes!");
@@ -208,7 +207,8 @@ public class Logic : MonoBehaviour {
         }
 
         string configjson = File.ReadAllText(jsonpath);
-        Config config = Config.CreateFromJSON(configjson);
+        print(configjson);
+        Config config = Config.Create(configjson);
 
         StartCoroutine("RunAllScenes", config.scenes);
 	}

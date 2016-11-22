@@ -40,7 +40,7 @@ public class Config {
     public Scene[] scenes;
 
     // Given the text of a JSON object, build the config class
-    public static Config CreateFromJSON(string jsonString){
+    public static Config Create(string jsonString){
         return JsonUtility.FromJson<Config>(jsonString);
     }
 }

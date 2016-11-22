@@ -1,0 +1,9 @@
+explore
+1
+3
+10
+
+Line 1: Mode, this line determines the other lines
+Line 2: Environment index
+Line 3: Player spawn index
+Line 4: time in environment in seconds
