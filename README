@@ -20,17 +20,24 @@ Enter environment at a spawn, for at most Z seconds
         Object spawn position
         Spawn pos of player
         Which of the 4 landmarks are active
-On timeout or Trigger Action
+On timeout OR wrong Trigger Action
     Turn player slowly towards real object spawn
+    Billboard object to player
     They have inf time to walk into the spawn to go to next scene
+On find object
+    Show object on screen as confirm, with configurable time for the object
 
-Nov 3: 2:11pm
+Alt modes--
 Placed in environment where they can explore for 2-3 mins, no objects.
+In environment, obj in the world, go collide with it, repeat
 
-mode 2
-In environment, obj in the world, go get it, repeat
 
-DONE Saturate colors more
-
-Text to json thing as part of bash script
+TODO This week
+ADD Subject numbre as top line :)
+ADD Player movement speed :)
+ADD Collision sphere size :)
+Change black screen after run to grey screen with plus from before, add
+paramater for it
+Make yellow more yellow, pink more pink :)
+TODO Correct normal mode
 

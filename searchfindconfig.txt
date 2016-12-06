@@ -1,10 +1,16 @@
 searchfind
+12345
+8.0
+3.0
 1
 0
 0 1
 0 1
 
-Line 1: Mode, this line determines the other lines
-Line 2: Environment index
-Line 3: Player spawn index
-Lines 4 and 5: list of sprite index with list of spawn index
+Line 1: Mode, this line determines other lines
+Line 2: Subject Number, int
+Line 3: Player move speed, float
+Line 4: Object trigger radius, float
+Line 5: Env index, int
+Line 6: Player spawn index, int
+Lines 7 and 8: list of sprite index with list of spawn index

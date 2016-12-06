@@ -3,26 +3,8 @@
 import sys
 import json
 
-"""
-{
-    "mode": "searchfind",
-    "objShowIndex" : 0,
-    "showTime" : 2,
-    "greyScreenTime" : 0,
-    "envIndex" : 1,
-    "envTime" : -1,
-    "objSpawnIndex" : -1,
-    "playerSpawnIndex" : 0,
-    "landmarkSpawnIndex" : -1,
-    "searchObjs" : [ 
-        { "objSpriteIndex" : 0, "objSpawnIndex" : 0 },
-        { "objSpriteIndex" : 1, "objSpawnIndex" : 1 }
-    ]
-}
-"""
-
 def eprint(*args, **kwargs):
-    """Print to std err"""
+    """Print to stderr"""
     print(*args, file=sys.stderr, **kwargs)
 
 def prettydumps(obj):
@@ -32,14 +14,22 @@ def toints(line):
     return (int(i) for i in line.split(" "))
 
 def wrapscenes(scenes):
-    # scenes is a list of scenes
+    # TODO Remove this function
     return {
         "scenes" : list(scenes)
     }
 
+def createconfig(subjectNumber, playerMoveSpeed, objTriggerRadius, scenes):
+    return {
+            "scenes" : list(scenes),
+            "subjectNumber": subjectNumber,
+            "playerMoveSpeed": playerMoveSpeed,
+            "objTriggerRadius": objTriggerRadius,
+    }
+
 def parsenormal(lines):
     def gen():
-        for info in zip(*map(toints, lines[1:8+1])):
+        for info in zip(*map(toints, lines[4:11+1])): # Grabbing ea column in text file
             infolist = list(info)
             yield {
                 "mode": "normal",
@@ -53,19 +43,19 @@ def parsenormal(lines):
                 "landmarkSpawnIndex" : infolist[7],
                 "searchObjs" : []
             }
-    return prettydumps(wrapscenes(list(gen())))
+    return prettydumps(createconfig(lines[1], lines[2], lines[3], list(gen())))
 
 def parseexplore(lines):
     return prettydumps(
-            wrapscenes([{
+            createconfig(lines[1], lines[2], lines[3], [{
                 "mode": "explore",
                 "objShowIndex" : -1,
                 "showTime" : -1,
                 "greyScreenTime" : -1,
-                "envIndex" : lines[1],
-                "envTime" : lines[3],
+                "envIndex" : lines[4],
+                "envTime" : lines[7],
                 "objSpawnIndex" : -1,
-                "playerSpawnIndex" : lines[2],
+                "playerSpawnIndex" : lines[5],
                 "landmarkSpawnIndex" : -1,
                 "searchObjs" : []
             }])
@@ -73,25 +63,25 @@ def parseexplore(lines):
 
 def parsesearchfind(lines):
     return prettydumps(
-            wrapscenes([{
+            createconfig(lines[1], lines[2], lines[3], [{
                 "mode": "searchfind",
                 "objShowIndex" : 0,
                 "showTime" : 0,
                 "greyScreenTime" : 0,
-                "envIndex" : lines[1],
+                "envIndex" : lines[4],
                 "envTime" : -1,
                 "objSpawnIndex" : -1,
-                "playerSpawnIndex" : lines[2],
+                "playerSpawnIndex" : lines[5],
                 "landmarkSpawnIndex" : -1,
                 "searchObjs" : [
-                    { "objSpriteIndex" : top, "objSpawnIndex" : bot } for top, bot in zip(*map(toints, lines[3:4+1]))
+                    { "objSpriteIndex" : top, "objSpawnIndex" : bot } for top, bot in zip(*map(toints, lines[6:7+1]))
                 ]
             }])
     )
 
 if __name__ == "__main__":
     def err(lines):
-        eprint("'{}' is not a recognized mode".format(lines[0])
+        eprint("'{}' is not a recognized mode".format(lines[0]))
 
     handlers = {
         "normal" : parsenormal,
@@ -102,5 +92,4 @@ if __name__ == "__main__":
     filename = sys.argv[1]
     with open(filename, "r") as f:
         lines = [l.rstrip() for l in f.readlines()]
-        print(handlers.get(lines[0], default=err)(lines))
-
+        print(handlers.get(lines[0], err)(lines))

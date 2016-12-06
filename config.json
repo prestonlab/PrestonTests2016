@@ -1,16 +1,67 @@
 {
     "scenes": [
         {
-            "mode": "explore",
-            "objSpawnIndex": -1,
+            "playerSpawnIndex": 0,
+            "envTime": 5,
+            "landmarkSpawnIndex": 3,
+            "envIndex": 0,
+            "objSpawnIndex": 1,
+            "showTime": 3,
+            "mode": "normal",
             "searchObjs": [],
-            "landmarkSpawnIndex": -1,
-            "envTime": 10,
+            "greyScreenTime": 3,
+            "objShowIndex": 1
+        },
+        {
+            "playerSpawnIndex": 1,
+            "envTime": 5,
+            "landmarkSpawnIndex": 2,
+            "envIndex": 1,
+            "objSpawnIndex": 2,
+            "showTime": 3,
+            "mode": "normal",
+            "searchObjs": [],
+            "greyScreenTime": 3,
+            "objShowIndex": 0
+        },
+        {
+            "playerSpawnIndex": 0,
+            "envTime": 5,
+            "landmarkSpawnIndex": 0,
+            "envIndex": 0,
+            "objSpawnIndex": 3,
+            "showTime": 3,
+            "mode": "normal",
+            "searchObjs": [],
+            "greyScreenTime": 3,
+            "objShowIndex": 1
+        },
+        {
+            "playerSpawnIndex": 1,
+            "envTime": 5,
+            "landmarkSpawnIndex": 2,
+            "envIndex": 1,
+            "objSpawnIndex": 0,
+            "showTime": 3,
+            "mode": "normal",
+            "searchObjs": [],
+            "greyScreenTime": 3,
+            "objShowIndex": 0
+        },
+        {
             "playerSpawnIndex": 2,
-            "showTime": -1,
-            "objShowIndex": -1,
-            "greyScreenTime": -1,
-            "envIndex": 1
+            "envTime": 5,
+            "landmarkSpawnIndex": 1,
+            "envIndex": 0,
+            "objSpawnIndex": 1,
+            "showTime": 3,
+            "mode": "normal",
+            "searchObjs": [],
+            "greyScreenTime": 3,
+            "objShowIndex": 1
         }
-    ]
+    ],
+    "objTriggerRadius": "3.0",
+    "playerMoveSpeed": "8.0",
+    "subjectNumber": "12345"
 }

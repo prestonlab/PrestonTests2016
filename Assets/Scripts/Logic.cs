@@ -207,7 +207,6 @@ public class Logic : MonoBehaviour {
         }
 
         string configjson = File.ReadAllText(jsonpath);
-        print(configjson);
         Config config = Config.Create(configjson);
 
         StartCoroutine("RunAllScenes", config.scenes);

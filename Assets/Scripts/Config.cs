@@ -36,8 +36,12 @@ public class Scene {
 // Config is a list of scenes and the player's settings
 [Serializable]
 public class Config {
-    // TODO Player speed etc
+    // The list of scenes to execute
     public Scene[] scenes;
+    // Global settings
+    public int subjectNumber;
+    public float playerMoveSpeed;
+    public float objTriggerRadius;
 
     // Given the text of a JSON object, build the config class
     public static Config Create(string jsonString){
