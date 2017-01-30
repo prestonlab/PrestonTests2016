@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerAction : MonoBehaviour {
+
+    private Config globalConfig = null; // A reference to the global config object, which holds keybinding configurations and other things
 
     // Did player trigger Action this frame?
     bool fDidAction = false;
@@ -17,6 +20,7 @@ public class PlayerAction : MonoBehaviour {
     private CharacterController charcont; // Freeze/Unfreeze player
 
     void Start(){
+        globalConfig = GameObject.Find("Logic").GetComponent<Logic>().globalConfig;
         child = transform.GetChild(0);
         GameObject go = transform.gameObject;
         fpscont = (FirstPersonController)go.GetComponent<FirstPersonController>();
@@ -24,7 +28,9 @@ public class PlayerAction : MonoBehaviour {
     }
 
 	void Update () {
-        fDidAction = Input.GetKeyDown("space");
+        fDidAction = Input.GetKeyDown(globalConfig.actionKey);
+        if(fDidAction)
+            print(String.Format("fDidAction: {0}, globalConfig.actionKey: {1}", fDidAction, globalConfig.actionKey)); // TODO XXX DEBUG
 	}
 
     // Coroutines

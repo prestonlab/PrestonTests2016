@@ -42,6 +42,7 @@ public class Config {
     public int subjectNumber;
     public float playerMoveSpeed;
     public float objTriggerRadius;
+    public string actionKey; // String of key for player to press to input an action. http://answers.unity3d.com/questions/762073/c-list-of-string-name-for-inputgetkeystring-name.html
 
     // Given the text of a JSON object, build the config class
     public static Config Create(string jsonString){

@@ -12,6 +12,8 @@ public class Logic : MonoBehaviour {
     public GameObject Environments = null;
     public GameObject CanvasCoord = null;
 
+    public Config globalConfig = null; // Global settings, like actionKey
+
     private bool fplayerfoundtarget = false;
 
     private void ResetCallbacks(){
@@ -194,9 +196,7 @@ public class Logic : MonoBehaviour {
         print("AllScenes(): Done running all scenes!");
     }
 
-    // Init
-
-	void Start () {
+	void Start(){
         // Read Json file to configure stuff
 
         string jsonpath = @"config.json";
@@ -208,6 +208,7 @@ public class Logic : MonoBehaviour {
 
         string configjson = File.ReadAllText(jsonpath);
         Config config = Config.Create(configjson);
+        globalConfig = config;
 
         StartCoroutine("RunAllScenes", config.scenes);
 	}

@@ -19,17 +19,18 @@ def wrapscenes(scenes):
         "scenes" : list(scenes)
     }
 
-def createconfig(subjectNumber, playerMoveSpeed, objTriggerRadius, scenes):
+def createconfig(subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes):
     return {
             "scenes" : list(scenes),
             "subjectNumber": subjectNumber,
             "playerMoveSpeed": playerMoveSpeed,
             "objTriggerRadius": objTriggerRadius,
+            "actionKey": actionKey,
     }
 
 def parsenormal(lines):
     def gen():
-        for info in zip(*map(toints, lines[4:11+1])): # Grabbing ea column in text file
+        for info in zip(*map(toints, lines[5:12+1])): # Grabbing ea column in text file
             infolist = list(info)
             yield {
                 "mode": "normal",
@@ -43,19 +44,19 @@ def parsenormal(lines):
                 "landmarkSpawnIndex" : infolist[7],
                 "searchObjs" : []
             }
-    return prettydumps(createconfig(lines[1], lines[2], lines[3], list(gen())))
+    return prettydumps(createconfig(lines[1], lines[2], lines[3], lines[4], (list(gen()))))
 
 def parseexplore(lines):
     return prettydumps(
-            createconfig(lines[1], lines[2], lines[3], [{
+            createconfig(lines[1], lines[2], lines[3], lines[4], [{
                 "mode": "explore",
                 "objShowIndex" : -1,
                 "showTime" : -1,
                 "greyScreenTime" : -1,
-                "envIndex" : lines[4],
-                "envTime" : lines[7],
+                "envIndex" : lines[5],
+                "envTime" : lines[8],
                 "objSpawnIndex" : -1,
-                "playerSpawnIndex" : lines[5],
+                "playerSpawnIndex" : lines[6],
                 "landmarkSpawnIndex" : -1,
                 "searchObjs" : []
             }])
@@ -63,18 +64,18 @@ def parseexplore(lines):
 
 def parsesearchfind(lines):
     return prettydumps(
-            createconfig(lines[1], lines[2], lines[3], [{
+            createconfig(lines[1], lines[2], lines[3], lines[4], [{
                 "mode": "searchfind",
                 "objShowIndex" : 0,
                 "showTime" : 0,
                 "greyScreenTime" : 0,
-                "envIndex" : lines[4],
+                "envIndex" : lines[5],
                 "envTime" : -1,
                 "objSpawnIndex" : -1,
-                "playerSpawnIndex" : lines[5],
+                "playerSpawnIndex" : lines[6],
                 "landmarkSpawnIndex" : -1,
                 "searchObjs" : [
-                    { "objSpriteIndex" : top, "objSpawnIndex" : bot } for top, bot in zip(*map(toints, lines[6:7+1]))
+                    { "objSpriteIndex" : top, "objSpawnIndex" : bot } for top, bot in zip(*map(toints, lines[7:8+1]))
                 ]
             }])
     )
