@@ -68,7 +68,6 @@ public class Logic : MonoBehaviour {
         foreach(object o in E.YieldFrom(ShowGrayScreen(s.objShowIndex, s.showTime, s.greyScreenTime)))
             yield return o;
 
-        // Generic GrayScreen Logic
         GameObject curenv = GetEnvGO(Environments, s.envIndex);
 
         curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
@@ -107,6 +106,9 @@ public class Logic : MonoBehaviour {
         curenv.BroadcastMessage("RemovePlayer");
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
+
+        foreach(object o in E.YieldFrom(ShowGrayScreen(0, 0.0f, s.greyScreenTimeTwo))) // TODO 1/30: greyScreenTime should be configurable seperatley
+            yield return o;
 
         print("Scene(): Done");
     }
@@ -189,9 +191,6 @@ public class Logic : MonoBehaviour {
 
             print(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
             counter += 1;
-
-            // Show black screen
-            yield return new WaitForSeconds(2.0f);
         }
         print("AllScenes(): Done running all scenes!");
     }

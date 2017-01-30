@@ -21,6 +21,7 @@ public class Scene {
     public int objShowIndex;
     public float showTime; // How long the object is on screen, seconds
     public float greyScreenTime; // How long the grey screen is shown, seconds
+    public float greyScreenTimeTwo; // How long the second grey screen is shown (after a scene ends), seconds
 
     public int envIndex; // The environment the player is in
     public float envTime; // The time the player is in the environment

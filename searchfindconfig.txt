@@ -7,6 +7,7 @@ space
 0
 0 1
 0 1
+0 1
 
 Line 1: Mode, this line determines other lines
 Line 2: Subject Number, int
@@ -15,4 +16,6 @@ Line 4: Object trigger radius, float
 Line 5: Key to trigger action, string, http://answers.unity3d.com/questions/762073/c-list-of-string-name-for-inputgetkeystring-name.html
 Line 6: Env index, int
 Line 7: Player spawn index, int
-Lines 8 and 9: list of sprite index with list of spawn index
+Line 8: List of sprite indices
+Line 9: List of player spawn indices
+Line 10: List of landmark spawn indices

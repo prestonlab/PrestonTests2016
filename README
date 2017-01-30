@@ -39,16 +39,22 @@ Make yellow more yellow, pink more pink :)
 
 TODO This week: 1/23/17
 Talktime: 40 mins
-TODO Correct normal mode
-TODO Change black screen after run to grey screen with plus from before, add time paramater for it
-TODO Allow searchfind segments to be interspersed with normal mode segments
-    -- allow for disabling of player despawning. A searchfind segment just
-    means player doesnt despawn adn no greyscreen is shown. -1 env or player
-    spawn could me don't despawn
-TODO Add landmark location param to searchfind config
-TODO Allow key for action to be specified, instead of space
+:) Allow key for action to be specified, instead of space
     -- look at unity list of keys in string form, let the string name of key
     be placed in config file
+:) Change black screen after run to grey screen with plus from before, add
+time paramater for it.
+:) Individualy configurable times for grey screen
+
+TODO Correct normal mode
+
+Do these two together...
+TODO Allow searchfind segments to be interspersed with normal mode segments
+    -- allow for disabling of player despawning. A searchfind segment just
+    means player doesnt despawn and no greyscreen is shown. -1 env or player
+    spawn could me don't despawn
+TODO Add landmark location param to searchfind config
+
 TODO Fix landmark positions
     -- you got a piece of paper for it, and an email
     -- keep the triggers in the arbitrary weird order they're in, where they

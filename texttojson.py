@@ -30,21 +30,22 @@ def createconfig(subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, sc
 
 def parsenormal(lines):
     def gen():
-        for info in zip(*map(toints, lines[5:12+1])): # Grabbing ea column in text file
+        for info in zip(*map(toints, lines[5:13+1])): # Grabbing ea column in text file
             infolist = list(info)
             yield {
                 "mode": "normal",
                 "objShowIndex" : infolist[0],
                 "showTime" : infolist[1],
                 "greyScreenTime" : infolist[2],
-                "envIndex" : infolist[3],
-                "envTime" : infolist[4],
-                "objSpawnIndex" : infolist[5],
-                "playerSpawnIndex" : infolist[6],
-                "landmarkSpawnIndex" : infolist[7],
+                "greyScreenTimeTwo" : infolist[3],
+                "envIndex" : infolist[4],
+                "envTime" : infolist[5],
+                "objSpawnIndex" : infolist[6],
+                "playerSpawnIndex" : infolist[7],
+                "landmarkSpawnIndex" : infolist[8],
                 "searchObjs" : []
             }
-    return prettydumps(createconfig(lines[1], lines[2], lines[3], lines[4], (list(gen()))))
+    return prettydumps(createconfig(lines[1], lines[2], lines[3], lines[4], list(gen())))
 
 def parseexplore(lines):
     return prettydumps(
@@ -53,6 +54,7 @@ def parseexplore(lines):
                 "objShowIndex" : -1,
                 "showTime" : -1,
                 "greyScreenTime" : -1,
+                "greyScreenTimeTwo" : -1,
                 "envIndex" : lines[5],
                 "envTime" : lines[8],
                 "objSpawnIndex" : -1,
@@ -69,6 +71,7 @@ def parsesearchfind(lines):
                 "objShowIndex" : 0,
                 "showTime" : 0,
                 "greyScreenTime" : 0,
+                "greyScreenTimeTwo" : 0,
                 "envIndex" : lines[5],
                 "envTime" : -1,
                 "objSpawnIndex" : -1,
