@@ -107,7 +107,7 @@ public class Logic : MonoBehaviour {
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
 
-        foreach(object o in E.YieldFrom(ShowGrayScreen(0, 0.0f, s.greyScreenTimeTwo))) // TODO 1/30: greyScreenTime should be configurable seperatley
+        foreach(object o in E.YieldFrom(ShowGrayScreen(0, 0.0f, s.greyScreenTimeTwo)))
             yield return o;
 
         print("Scene(): Done");
