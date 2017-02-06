@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+// A trigger object, with a trigger component attached
 public class ObjTrigger : MonoBehaviour {
 
     private Action curcallback = null;

@@ -10,9 +10,9 @@ public class PlayerAction : MonoBehaviour {
     private Config globalConfig = null; // A reference to the global config object, which holds keybinding configurations and other things
 
     // Did player trigger Action this frame?
-    bool fDidAction = false;
+    bool fDidAction = false; // TODO REMOVE
 
-    public bool IsActive {get{return fDidAction;}}
+    public bool IsActive {get{return fDidAction;}} // TODO REMOVE
 
     private Transform child;
 
@@ -26,12 +26,6 @@ public class PlayerAction : MonoBehaviour {
         fpscont = (FirstPersonController)go.GetComponent<FirstPersonController>();
         charcont = (CharacterController)go.GetComponent<CharacterController>();
     }
-
-	void Update () {
-        fDidAction = Input.GetKeyDown(globalConfig.actionKey);
-        if(fDidAction)
-            print(String.Format("fDidAction: {0}, globalConfig.actionKey: {1}", fDidAction, globalConfig.actionKey)); // TODO XXX DEBUG
-	}
 
     // Coroutines
     readonly float lookslerptime = 2.0f;

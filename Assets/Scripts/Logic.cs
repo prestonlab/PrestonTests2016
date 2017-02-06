@@ -77,9 +77,10 @@ public class Logic : MonoBehaviour {
 
         // Specific scene logic
 
-        // TODO we should wait for ANY space press, not just the player pressing space on the target
         float curtime = Time.time;
-        yield return new WaitUntil(() => fplayerfoundtarget || Time.time - curtime >= s.envTime);
+        yield return new WaitUntil(() => Input.GetKeyDown(globalConfig.actionKey) || Time.time - curtime >= s.envTime);
+
+        // TODO Check if player found target after the press
 
         print(String.Format("RunScene(): fplayerfoundtarget: '{0}'", fplayerfoundtarget));
 
