@@ -29,6 +29,7 @@ public class Scene {
     public int playerSpawnIndex; // Index of position player spawns in
     public int landmarkSpawnIndex; // Index of position landmark spawns in
     
+    // TODO Remove, searchfind is a special case of normal now
     // For searchfind
     public SearchObj[] searchObjs; // Sprite and Spawn index of ea obj to find
 

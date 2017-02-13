@@ -1,73 +1,73 @@
 {
-    "subjectNumber": "12345",
     "actionKey": "space",
-    "objTriggerRadius": "3.0",
     "playerMoveSpeed": "8.0",
     "scenes": [
         {
-            "playerSpawnIndex": 0,
-            "envTime": 5,
-            "greyScreenTime": 3,
-            "objSpawnIndex": 1,
-            "objShowIndex": 1,
-            "envIndex": 0,
-            "showTime": 3,
-            "greyScreenTimeTwo": 10,
             "searchObjs": [],
             "landmarkSpawnIndex": 3,
-            "mode": "normal"
-        },
-        {
-            "playerSpawnIndex": 1,
-            "envTime": 5,
-            "greyScreenTime": 3,
-            "objSpawnIndex": 2,
-            "objShowIndex": 0,
-            "envIndex": 1,
-            "showTime": 3,
             "greyScreenTimeTwo": 3,
-            "searchObjs": [],
-            "landmarkSpawnIndex": 2,
-            "mode": "normal"
-        },
-        {
-            "playerSpawnIndex": 0,
-            "envTime": 5,
-            "greyScreenTime": 3,
-            "objSpawnIndex": 3,
             "objShowIndex": 1,
             "envIndex": 0,
+            "envTime": 10,
+            "mode": "normal",
             "showTime": 3,
+            "objSpawnIndex": 1,
+            "greyScreenTime": 3,
+            "playerSpawnIndex": 0
+        },
+        {
+            "searchObjs": [],
+            "landmarkSpawnIndex": 2,
             "greyScreenTimeTwo": 3,
+            "objShowIndex": 0,
+            "envIndex": 1,
+            "envTime": 5,
+            "mode": "normal",
+            "showTime": 3,
+            "objSpawnIndex": 2,
+            "greyScreenTime": 3,
+            "playerSpawnIndex": 1
+        },
+        {
             "searchObjs": [],
             "landmarkSpawnIndex": 0,
-            "mode": "normal"
-        },
-        {
-            "playerSpawnIndex": 1,
-            "envTime": 5,
-            "greyScreenTime": 3,
-            "objSpawnIndex": 0,
-            "objShowIndex": 0,
-            "envIndex": 1,
-            "showTime": 3,
             "greyScreenTimeTwo": 3,
-            "searchObjs": [],
-            "landmarkSpawnIndex": 2,
-            "mode": "normal"
-        },
-        {
-            "playerSpawnIndex": 2,
-            "envTime": 5,
-            "greyScreenTime": 3,
-            "objSpawnIndex": 1,
             "objShowIndex": 1,
             "envIndex": 0,
+            "envTime": 5,
+            "mode": "normal",
             "showTime": 3,
+            "objSpawnIndex": 3,
+            "greyScreenTime": 3,
+            "playerSpawnIndex": 0
+        },
+        {
+            "searchObjs": [],
+            "landmarkSpawnIndex": 2,
             "greyScreenTimeTwo": 3,
+            "objShowIndex": 0,
+            "envIndex": 1,
+            "envTime": 5,
+            "mode": "normal",
+            "showTime": 3,
+            "objSpawnIndex": 0,
+            "greyScreenTime": 3,
+            "playerSpawnIndex": 1
+        },
+        {
             "searchObjs": [],
             "landmarkSpawnIndex": 1,
-            "mode": "normal"
+            "greyScreenTimeTwo": 3,
+            "objShowIndex": 1,
+            "envIndex": 0,
+            "envTime": 5,
+            "mode": "normal",
+            "showTime": 3,
+            "objSpawnIndex": 1,
+            "greyScreenTime": 3,
+            "playerSpawnIndex": 2
         }
-    ]
+    ],
+    "objTriggerRadius": "3.0",
+    "subjectNumber": "12345"
 }

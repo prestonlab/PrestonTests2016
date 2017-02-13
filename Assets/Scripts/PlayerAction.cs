@@ -28,7 +28,7 @@ public class PlayerAction : MonoBehaviour {
     }
 
     // Coroutines
-    readonly float lookslerptime = 2.0f;
+    readonly float lookslerptime = 0.5f; // TODO Configurable, global
     public IEnumerator PlayerLookTowards(){
         Vector3 goalpos = GameObject.FindWithTag("GoalTrigger").transform.position - transform.position;
         Quaternion goalrot = Quaternion.LookRotation(goalpos);

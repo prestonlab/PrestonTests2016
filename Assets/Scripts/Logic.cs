@@ -25,12 +25,13 @@ public class Logic : MonoBehaviour {
         fplayerfoundtarget = true;
     }
 
-    private object OnFindTarget(){
+    private IEnumerator OnFindTarget(GameObject player){
         print("GOOD JOB U FOUND TARGET");
         fplayerfoundtarget = false;
         // Freeze controls
-        // TODO
-        return new WaitForSeconds(2); // XXX Post wait time, not in Scene. Should it be? Or should it be 0 always?
+        player.SendMessage("DisableInput");
+        yield return new WaitForSeconds(.5f); // TODO Configurable, global
+        player.SendMessage("EnableInput");
     }
 
     // Helper
@@ -63,32 +64,51 @@ public class Logic : MonoBehaviour {
     }
 
     public IEnumerator RunNormalScene(Scene s){
-        print("Scene(): Starting");
+        print("RunNormalScene(): Starting");
 
+        // Show GrayScreen
         foreach(object o in E.YieldFrom(ShowGrayScreen(s.objShowIndex, s.showTime, s.greyScreenTime)))
             yield return o;
 
+        // Env we'll be sending message to
         GameObject curenv = GetEnvGO(Environments, s.envIndex);
 
         curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
         curenv.BroadcastMessage("ActivateObjTriggerAtIndex",
-                new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback, null));
+                new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback, s.objShowIndex));
         curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
 
+        // Get player reference
+        GameObject player = GameObject.FindWithTag("Player");
+
+        //
         // Specific scene logic
+        //
 
         float curtime = Time.time;
         yield return new WaitUntil(() => Input.GetKeyDown(globalConfig.actionKey) || Time.time - curtime >= s.envTime);
 
-        // TODO Check if player found target after the press
+        // Check if player found target after the press
+        // An ObjTrigger would have used the callback if it existed
 
         print(String.Format("RunScene(): fplayerfoundtarget: '{0}'", fplayerfoundtarget));
 
         if(fplayerfoundtarget){
-            yield return OnFindTarget();
+            print("You found the target without having to be shown it!");
+            curenv.BroadcastMessage("ShowSelf");
+
+            // Turn player towards object XXX EXPERIMENTAL
+            foreach(object o in E.YieldFrom((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards()))
+                yield return o;
+
+            foreach(object o in E.YieldFrom(OnFindTarget(player)))
+                yield return o;
+            curenv.BroadcastMessage("HideSelf");
         }else{
-            print("Go find the target!!!!");
-            GameObject player = GameObject.FindWithTag("Player");
+            print("You didn't find the target in time. Let me show it to you...");
+
+            // TODO Turn the target on! Show the billboarded sprite!
+            curenv.BroadcastMessage("ShowSelf");
 
             // Freeze player controls
             player.SendMessage("DisableInput");
@@ -98,10 +118,13 @@ public class Logic : MonoBehaviour {
                 yield return o;
 
             player.SendMessage("EnableInput");
+            print("...now go find the target!");
 
             yield return new WaitUntil(() => fplayerfoundtarget);
 
-            yield return OnFindTarget();
+            foreach(object o in E.YieldFrom(OnFindTarget(player)))
+                yield return o;
+            curenv.BroadcastMessage("HideSelf");
         }
 
         curenv.BroadcastMessage("RemovePlayer");

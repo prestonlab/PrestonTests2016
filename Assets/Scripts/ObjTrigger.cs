@@ -16,6 +16,18 @@ public class ObjTrigger : MonoBehaviour {
         rend.enabled = false;
     }
 
+    // Messages for showing and hiding the sprite
+    //
+    public void ShowSelf(){
+        rend.enabled = true;
+    }
+
+    public void HideSelf(){
+        rend.enabled = false;
+    }
+
+    // Messages for dealing with information
+
     public void SetSprite(int spriteIndex){
         rend.material.mainTexture = (Texture)Resources.Load(spriteIndex.ToString());
     }
@@ -24,7 +36,7 @@ public class ObjTrigger : MonoBehaviour {
         curcallback = ti.callback;
         if(ti.spriteIndex.HasValue){
             SendMessage("SetSprite", ti.spriteIndex);
-            rend.enabled = true;
+            //rend.enabled = true; // XXX Must be manually enabled, TODO Update searchfind to care about this
         }
     }
 
@@ -35,7 +47,7 @@ public class ObjTrigger : MonoBehaviour {
     }
 
     public void OnTriggerStay(Collider other) {
-        if(other.gameObject.GetComponent<PlayerAction>().IsActive)
+        if(other.gameObject.GetComponent<PlayerAction>() != null)
             curcallback();
     }
 }

@@ -1,4 +1,4 @@
-TODO: 11/3/16
+:) 11/3/16
 No cones in inf plane, just "objects"
 Different colors for mountains in ea place w/ hills
     Mountains
@@ -37,7 +37,7 @@ ADD Player movement speed :)
 ADD Collision sphere size :)
 Make yellow more yellow, pink more pink :)
 
-TODO This week: 1/23/17
+:) This week: 1/23/17
 Talktime: 40 mins
 :) Allow key for action to be specified, instead of space
     -- look at unity list of keys in string form, let the string name of key
@@ -45,8 +45,14 @@ Talktime: 40 mins
 :) Change black screen after run to grey screen with plus from before, add
 time paramater for it.
 :) Individualy configurable times for grey screen
+:) Correct normal mode
+:) Fix landmark positions
+    -- you got a piece of paper for it, and an email
+    -- keep the triggers in the arbitrary weird order they're in, where they
+    cross quadrants
 
-TODO Correct normal mode
+This week: 2/6/17
+TODO Configure billboard time (lookslerptime)
 
 Do these two together...
 TODO Allow searchfind segments to be interspersed with normal mode segments
@@ -55,8 +61,4 @@ TODO Allow searchfind segments to be interspersed with normal mode segments
     spawn could me don't despawn
 TODO Add landmark location param to searchfind config
 
-TODO Fix landmark positions
-    -- you got a piece of paper for it, and an email
-    -- keep the triggers in the arbitrary weird order they're in, where they
-    cross quadrants
 TODO Add the smily guys as the sprites, in the email from 11/22/16
