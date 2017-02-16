@@ -32,7 +32,6 @@ public class Scene {
     // TODO Remove, searchfind is a special case of normal now
     // For searchfind
     public SearchObj[] searchObjs; // Sprite and Spawn index of ea obj to find
-
 }
 
 // Config is a list of scenes and the player's settings
@@ -41,6 +40,7 @@ public class Config {
     // The list of scenes to execute
     public Scene[] scenes;
     // Global settings
+    public float pauseTime;
     public string phaseName;
     public int subjectNumber;
     public float playerMoveSpeed;

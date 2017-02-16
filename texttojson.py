@@ -13,13 +13,7 @@ def prettydumps(obj):
 def toints(line):
     return (int(i) for i in line.split(" "))
 
-def wrapscenes(scenes):
-    # TODO Remove this function
-    return {
-        "scenes" : list(scenes)
-    }
-
-def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes):
+def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime):
     return {
             "scenes" : list(scenes),
             "phaseName": phaseName,
@@ -27,60 +21,47 @@ def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, ac
             "playerMoveSpeed": playerMoveSpeed,
             "objTriggerRadius": objTriggerRadius,
             "actionKey": actionKey,
+            "pauseTime": pauseTime,
     }
 
-def parsenormal(lines):
+def createcreateconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, pauseTime, actionKey):
+    """Returns a function that only needs a list of scenes to create the config"""
+    def f(scenes):
+        return createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime)
+    return f
+
+def parsenormal(lines, _, configfunc):
     def gen():
-        for info in zip(*map(toints, lines[5:13+1])): # Grabbing ea column in text file
-            infolist = list(info)
+        for info in map(list, zip(*map(toints, lines[6:14+1]))): # Grabbing ea column in text file
             yield {
                 "mode": "normal",
-                "objShowIndex" : infolist[0],
-                "showTime" : infolist[1],
-                "greyScreenTime" : infolist[2],
-                "greyScreenTimeTwo" : infolist[3],
-                "envIndex" : infolist[4],
-                "envTime" : infolist[5],
-                "objSpawnIndex" : infolist[6],
-                "playerSpawnIndex" : infolist[7],
-                "landmarkSpawnIndex" : infolist[8],
+                "objShowIndex" : info[0],
+                "showTime" : info[1],
+                "greyScreenTime" : info[2],
+                "greyScreenTimeTwo" : info[3],
+                "envIndex" : info[4],
+                "envTime" : info[5],
+                "objSpawnIndex" : info[6],
+                "playerSpawnIndex" : info[7],
+                "landmarkSpawnIndex" : info[8],
                 "searchObjs" : []
             }
-    return prettydumps(createconfig("normal", lines[1], lines[2], lines[3], lines[4], list(gen())))
+    return prettydumps(configfunc(list(gen())))
 
-def parseexplore(lines):
+def parseexplore(alllines, infolines, configfunc):
     return prettydumps(
-            createconfig("explore", lines[1], lines[2], lines[3], lines[4], [{
+            configfunc([{
                 "mode": "explore",
                 "objShowIndex" : -1,
                 "showTime" : -1,
                 "greyScreenTime" : -1,
                 "greyScreenTimeTwo" : -1,
-                "envIndex" : lines[5],
-                "envTime" : lines[7],
+                "envIndex" : infolines[0],
+                "envTime" : infolines[2],
                 "objSpawnIndex" : -1,
-                "playerSpawnIndex" : lines[6],
+                "playerSpawnIndex" : infolines[1],
                 "landmarkSpawnIndex" : -1,
                 "searchObjs" : []
-            }])
-    )
-
-def parsesearchfind(lines):
-    return prettydumps(
-            createconfig("searchfind", lines[1], lines[2], lines[3], lines[4], [{
-                "mode": "searchfind",
-                "objShowIndex" : 0,
-                "showTime" : 0,
-                "greyScreenTime" : 0,
-                "greyScreenTimeTwo" : 0,
-                "envIndex" : lines[5],
-                "envTime" : -1,
-                "objSpawnIndex" : -1,
-                "playerSpawnIndex" : lines[6],
-                "landmarkSpawnIndex" : -1,
-                "searchObjs" : [
-                    { "objSpriteIndex" : top, "objSpawnIndex" : bot } for top, bot in zip(*map(toints, lines[7:8+1]))
-                ]
             }])
     )
 
@@ -91,10 +72,9 @@ if __name__ == "__main__":
     handlers = {
         "normal" : parsenormal,
         "explore" : parseexplore,
-        "searchfind" : parsesearchfind,
     }
 
     filename = sys.argv[1]
     with open(filename, "r") as f:
         lines = [l.rstrip() for l in f.readlines()]
-        print(handlers.get(lines[0], err)(lines))
+        print(handlers.get(lines[0], err)(lines, lines[6:], createcreateconfig(*lines[0:6])))

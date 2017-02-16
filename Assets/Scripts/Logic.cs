@@ -32,7 +32,7 @@ public class Logic : MonoBehaviour {
         fplayerfoundtarget = false;
         // Freeze controls
         player.SendMessage("DisableInput");
-        yield return new WaitForSeconds(.5f); // TODO Configurable, global
+        yield return new WaitForSeconds(globalConfig.pauseTime);
         player.SendMessage("EnableInput");
     }
 
@@ -113,7 +113,7 @@ public class Logic : MonoBehaviour {
         }else{
             print("You didn't find the target in time. Let me show it to you...");
 
-            // TODO Turn the target on! Show the billboarded sprite!
+            // Turn the target on! Show the billboarded sprite!
             curenv.BroadcastMessage("ShowSelf");
 
             // Freeze player controls
