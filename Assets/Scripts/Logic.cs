@@ -204,7 +204,7 @@ public class Logic : MonoBehaviour {
     }
 
     public IEnumerator RunScene(Scene s, Logger logger){
-        // TODO Maybe refactor to class with inheritance?
+        // Maybe refactor to class with inheritance?
         switch(s.mode){
             case "normal":
                 foreach(object o in E.YieldFrom(RunNormalScene(s, logger)))

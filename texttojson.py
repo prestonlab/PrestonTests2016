@@ -13,7 +13,7 @@ def prettydumps(obj):
 def toints(line):
     return (int(i) for i in line.split(" "))
 
-def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime):
+def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime):
     return {
             "scenes" : list(scenes),
             "phaseName": phaseName,
@@ -22,17 +22,18 @@ def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, ac
             "objTriggerRadius": objTriggerRadius,
             "actionKey": actionKey,
             "pauseTime": pauseTime,
+            "lookSlerpTime": lookSlerpTime,
     }
 
-def createcreateconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, pauseTime, actionKey):
+def createcreateconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, pauseTime, lookSlerpTime, actionKey):
     """Returns a function that only needs a list of scenes to create the config"""
     def f(scenes):
-        return createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime)
+        return createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime)
     return f
 
-def parsenormal(lines, _, configfunc):
+def parsenormal(lines, infolines, configfunc):
     def gen():
-        for info in map(list, zip(*map(toints, lines[6:14+1]))): # Grabbing ea column in text file
+        for info in map(list, zip(*map(toints, lines[7:15+1]))): # Grabbing ea column in text file
             yield {
                 "mode": "normal",
                 "objShowIndex" : info[0],
@@ -77,4 +78,4 @@ if __name__ == "__main__":
     filename = sys.argv[1]
     with open(filename, "r") as f:
         lines = [l.rstrip() for l in f.readlines()]
-        print(handlers.get(lines[0], err)(lines, lines[6:], createcreateconfig(*lines[0:6])))
+        print(handlers.get(lines[0], err)(lines, lines[7:], createcreateconfig(*lines[0:7])))

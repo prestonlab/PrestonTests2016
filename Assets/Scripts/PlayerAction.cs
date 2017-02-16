@@ -9,11 +9,6 @@ public class PlayerAction : MonoBehaviour {
 
     private Config globalConfig = null; // A reference to the global config object, which holds keybinding configurations and other things
 
-    // Did player trigger Action this frame?
-    bool fDidAction = false; // TODO REMOVE
-
-    public bool IsActive {get{return fDidAction;}} // TODO REMOVE
-
     private Transform child;
 
     private FirstPersonController fpscont; // Enable/Disable input
@@ -28,7 +23,6 @@ public class PlayerAction : MonoBehaviour {
     }
 
     // Coroutines
-    readonly float lookslerptime = 0.5f; // TODO Configurable, global
     public IEnumerator PlayerLookTowards(){
         Vector3 goalpos = GameObject.FindWithTag("GoalTrigger").transform.position - transform.position;
         Quaternion goalrot = Quaternion.LookRotation(goalpos);
@@ -36,8 +30,8 @@ public class PlayerAction : MonoBehaviour {
 
         Quaternion initrot = transform.rotation;
         float curtime = Time.time;
-        while(Time.time - curtime < lookslerptime){
-            float prop = (Time.time - curtime) / lookslerptime;
+        while(Time.time - curtime < globalConfig.lookSlerpTime){
+            float prop = (Time.time - curtime) / globalConfig.lookSlerpTime;
             transform.rotation = Quaternion.Slerp(initrot, goalrotflat, prop);
             child.rotation = Quaternion.Slerp(initrot, goalrotflat, prop);
             yield return null;

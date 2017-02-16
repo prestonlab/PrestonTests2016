@@ -40,6 +40,7 @@ public class Config {
     // The list of scenes to execute
     public Scene[] scenes;
     // Global settings
+    public float lookSlerpTime;
     public float pauseTime;
     public string phaseName;
     public int subjectNumber;

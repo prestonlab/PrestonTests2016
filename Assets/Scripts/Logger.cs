@@ -163,7 +163,7 @@ public class Logger : MonoBehaviour {
 		//
 
 		//Setup XmlWriter with indenting enabled (uses hot C# syntax for Object Initializer)
-		//TODO Try/catch/finally
+		//TODO Try/catch/finally, or just crash
 		m_writer = XmlWriter.Create(XmlLogOutput, new XmlWriterSettings(){Indent = true});
 
 		//Start our document

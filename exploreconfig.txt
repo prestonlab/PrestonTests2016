@@ -3,6 +3,7 @@ explore
 8.0
 3.0
 0.5
+2.0
 space
 1
 3
@@ -12,8 +13,9 @@ Line 1: Mode, this line determines the other lines
 Line 2: Subject Number, int
 Line 3: Player move speed, float
 Line 4: Object trigger radius, float
-Line 5: Time player can't input after discovering object, float, seconds
-Line 6: Key to trigger action, string, http://answers.unity3d.com/questions/762073/c-list-of-string-name-for-inputgetkeystring-name.html
-Line 7: Environment index
-Line 8: Player spawn index
-Line 9: time in environment in seconds
+Line 5: Time player can't input after discovering object, float, seconds (unused)
+Line 6: Time for player to turn and face object, float, seconds (unused)
+Line 7: Key to trigger action, string, http://answers.unity3d.com/questions/762073/c-list-of-string-name-for-inputgetkeystring-name.html
+Line 8: Environment index
+Line 9: Player spawn index
+Line 10: time in environment in seconds
