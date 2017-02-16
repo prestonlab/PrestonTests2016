@@ -1,3 +1,17 @@
+config.json is required to exist in this folder.
+temp.xml will be created, or overwritten if it exists. It contains logging information.
+A Python tool is provided for converting text files to the config.json variant. It
+takes a files as its first argument and outputs the config.json through
+stdout.
+usage:
+    texttojson.py normalconfig.txt > config.json
+
+Three example text config files exist: normalconfig.txt, searchfindconfig.txt, explore.txt.
+They should have nice comments explaining what they do at the bottom. The line
+numbers in use should not be modified, its really sensitive.
+
+This is all a TODO list...
+
 :) 11/3/16
 No cones in inf plane, just "objects"
 Different colors for mountains in ea place w/ hills
