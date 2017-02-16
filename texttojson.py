@@ -19,9 +19,10 @@ def wrapscenes(scenes):
         "scenes" : list(scenes)
     }
 
-def createconfig(subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes):
+def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes):
     return {
             "scenes" : list(scenes),
+            "phaseName": phaseName,
             "subjectNumber": subjectNumber,
             "playerMoveSpeed": playerMoveSpeed,
             "objTriggerRadius": objTriggerRadius,
@@ -45,11 +46,11 @@ def parsenormal(lines):
                 "landmarkSpawnIndex" : infolist[8],
                 "searchObjs" : []
             }
-    return prettydumps(createconfig(lines[1], lines[2], lines[3], lines[4], list(gen())))
+    return prettydumps(createconfig("normal", lines[1], lines[2], lines[3], lines[4], list(gen())))
 
 def parseexplore(lines):
     return prettydumps(
-            createconfig(lines[1], lines[2], lines[3], lines[4], [{
+            createconfig("explore", lines[1], lines[2], lines[3], lines[4], [{
                 "mode": "explore",
                 "objShowIndex" : -1,
                 "showTime" : -1,
@@ -66,7 +67,7 @@ def parseexplore(lines):
 
 def parsesearchfind(lines):
     return prettydumps(
-            createconfig(lines[1], lines[2], lines[3], lines[4], [{
+            createconfig("searchfind", lines[1], lines[2], lines[3], lines[4], [{
                 "mode": "searchfind",
                 "objShowIndex" : 0,
                 "showTime" : 0,

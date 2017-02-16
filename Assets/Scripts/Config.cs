@@ -41,6 +41,7 @@ public class Config {
     // The list of scenes to execute
     public Scene[] scenes;
     // Global settings
+    public string phaseName;
     public int subjectNumber;
     public float playerMoveSpeed;
     public float objTriggerRadius;

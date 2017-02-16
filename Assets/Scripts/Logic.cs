@@ -7,6 +7,8 @@ using System;
 using System.IO;
 using System.Text;
 
+using Eppy; // Tuple<T1, T2>
+
 public class Logic : MonoBehaviour {
 
     public GameObject Environments = null;
@@ -63,7 +65,7 @@ public class Logic : MonoBehaviour {
         print("ShowGrayScreen(): Disabled grayscreen");
     }
 
-    public IEnumerator RunNormalScene(Scene s){
+    public IEnumerator RunNormalScene(Scene s, Logger logger){
         print("RunNormalScene(): Starting");
 
         // Show GrayScreen
@@ -81,6 +83,10 @@ public class Logic : MonoBehaviour {
         // Get player reference
         GameObject player = GameObject.FindWithTag("Player");
 
+        // Setup logger, using environment info component
+        EnvInfo envinfo = (EnvInfo)curenv.GetComponent<EnvInfo>();
+        logger.StartTrial(envinfo.GetActiveTriggerObj().transform.position, player, envinfo.GetOrigin());
+
         //
         // Specific scene logic
         //
@@ -97,7 +103,7 @@ public class Logic : MonoBehaviour {
             print("You found the target without having to be shown it!");
             curenv.BroadcastMessage("ShowSelf");
 
-            // Turn player towards object XXX EXPERIMENTAL
+            // Turn player towards object
             foreach(object o in E.YieldFrom((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards()))
                 yield return o;
 
@@ -127,6 +133,8 @@ public class Logic : MonoBehaviour {
             curenv.BroadcastMessage("HideSelf");
         }
 
+        logger.EndTrial();
+
         curenv.BroadcastMessage("RemovePlayer");
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
@@ -138,7 +146,7 @@ public class Logic : MonoBehaviour {
     }
 
     // Placed in environment where they can explore for 2-3 mins, no objects.
-    public IEnumerator RunExploreScene(Scene s){
+    public IEnumerator RunExploreScene(Scene s, Logger logger){
         print("ExploreScene(): Starting");
 
         // Doesn't have GrayScreen
@@ -152,7 +160,7 @@ public class Logic : MonoBehaviour {
     }
 
     // In environment, obj in the world, go get it, repeat
-    public IEnumerator RunSearchFindScene(Scene s){
+    public IEnumerator RunSearchFindScene(Scene s, Logger logger){
         print("SearchFindScene(): Starting");
 
         // Doesn't have GrayScreen
@@ -184,46 +192,54 @@ public class Logic : MonoBehaviour {
         print("SearchFindScene(): Done");
     }
 
-    public IEnumerator RunScene(Scene s){
+    public IEnumerator RunScene(Scene s, Logger logger){
         // TODO Maybe refactor to class with inheritance?
         switch(s.mode){
             case "normal":
-                foreach(object o in E.YieldFrom(RunNormalScene(s)))
+                foreach(object o in E.YieldFrom(RunNormalScene(s, logger)))
                     yield return o;
                 break;
             case "explore":
-                foreach(object o in E.YieldFrom(RunExploreScene(s)))
+                foreach(object o in E.YieldFrom(RunExploreScene(s, logger)))
                     yield return o;
                 break;
             case "searchfind":
-                foreach(object o in E.YieldFrom(RunSearchFindScene(s)))
+                foreach(object o in E.YieldFrom(RunSearchFindScene(s, logger)))
                     yield return o;
                 break;
             default:
-                System.Diagnostics.Debug.Assert(false, String.Format("mode is invalid: '{0}'", s.mode));
+                System.Diagnostics.Debug.Assert(false, String.Format("scene mode is invalid: '{0}'", s.mode));
                 return false;
         }
     }
 
-    public IEnumerator RunAllScenes(IEnumerable<Scene> scenes){
+    public IEnumerator RunAllScenes(Tuple<IEnumerable<Scene>, Logger> tup){
+        IEnumerable<Scene> scenes = tup.Item1;
+        Logger logger = tup.Item2;
+        logger.StartPhase(globalConfig.phaseName);
+
         int counter = 0;
         foreach(Scene s in scenes){
             print(String.Format("AllScenes(): Running scene number: {0}", counter));
 
-            foreach(object o in E.YieldFrom(RunScene(s)))
+            foreach(object o in E.YieldFrom(RunScene(s, logger)))
                 yield return o;
 
             print(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
             counter += 1;
         }
+
+        logger.EndPhase();
+
         print("AllScenes(): Done running all scenes!");
     }
 
 	void Start(){
         // Read Json file to configure stuff
+        //
 
         string jsonpath = @"config.json";
-        if (!File.Exists(jsonpath)){
+        if(!File.Exists(jsonpath)){
             Debug.LogError(String.Format("Couldn't load config file at: {0}", jsonpath));
             Debug.Assert(false);
             Application.Quit();
@@ -233,6 +249,10 @@ public class Logic : MonoBehaviour {
         Config config = Config.Create(configjson);
         globalConfig = config;
 
-        StartCoroutine("RunAllScenes", config.scenes);
+        // Setup logger
+        Logger logger = GetComponent<Logger>();
+        logger.InitLogger();
+
+        StartCoroutine("RunAllScenes", new Tuple<IEnumerable<Scene>, Logger>(config.scenes, logger));
 	}
 }
