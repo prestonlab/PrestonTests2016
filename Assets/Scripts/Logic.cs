@@ -153,7 +153,18 @@ public class Logic : MonoBehaviour {
 
         GameObject curenv = GetEnvGO(Environments, s.envIndex);
         curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
+
+        // Get player reference
+        GameObject player = GameObject.FindWithTag("Player");
+
+        // Setup logger, using environment info component
+        EnvInfo envinfo = (EnvInfo)curenv.GetComponent<EnvInfo>();
+        logger.StartTrial(Vector3.zero, player, envinfo.GetOrigin()); // No destination in explore mode
+
         yield return new WaitForSeconds(s.envTime);
+
+        logger.EndTrial();
+
         curenv.BroadcastMessage("RemovePlayer");
 
         print("ExploreScene(): Done");

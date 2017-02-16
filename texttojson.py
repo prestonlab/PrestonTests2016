@@ -57,7 +57,7 @@ def parseexplore(lines):
                 "greyScreenTime" : -1,
                 "greyScreenTimeTwo" : -1,
                 "envIndex" : lines[5],
-                "envTime" : lines[8],
+                "envTime" : lines[7],
                 "objSpawnIndex" : -1,
                 "playerSpawnIndex" : lines[6],
                 "landmarkSpawnIndex" : -1,
