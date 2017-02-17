@@ -24,12 +24,14 @@ public class SpawnLogic : MonoBehaviour {
     void SpawnPlayerAtIndex(int index){
         Debug.Assert(0 <= index && index <= spawnLocs.Count);
         Debug.Assert(trackedplayer == null);
+        print("SPAWNED THE FUCKIN PALYER");
         Transform loc = spawnLocs[index];
         trackedplayer = ((Transform)Instantiate(playergo, loc.position, loc.rotation)).gameObject;
     }
 
     // Kills the player
     void RemovePlayer(){
-        Destroy(trackedplayer);
+        if(trackedplayer)
+            Destroy(trackedplayer);
     }
 }

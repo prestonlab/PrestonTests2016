@@ -33,7 +33,7 @@ def createcreateconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadi
 
 def parsenormal(lines, infolines, configfunc):
     def gen():
-        for info in map(list, zip(*map(toints, lines[7:15+1]))): # Grabbing ea column in text file
+        for info in map(list, zip(*map(toints, lines[7:16+1]))): # Grabbing ea column in text file
             yield {
                 "mode": "normal",
                 "objShowIndex" : info[0],
@@ -43,9 +43,10 @@ def parsenormal(lines, infolines, configfunc):
                 "envIndex" : info[4],
                 "envTime" : info[5],
                 "objSpawnIndex" : info[6],
-                "playerSpawnIndex" : info[7],
-                "landmarkSpawnIndex" : info[8],
-                "searchObjs" : []
+                "showObjAlways" : info[7] == 1, # Show obj only if value is 1
+                "playerSpawnIndex" : info[8],
+                "landmarkSpawnIndex" : info[9],
+                "searchObjs" : [],
             }
     return prettydumps(configfunc(list(gen())))
 
@@ -60,9 +61,10 @@ def parseexplore(alllines, infolines, configfunc):
                 "envIndex" : infolines[0],
                 "envTime" : infolines[2],
                 "objSpawnIndex" : -1,
+                "showObjAlways" : False,
                 "playerSpawnIndex" : infolines[1],
                 "landmarkSpawnIndex" : -1,
-                "searchObjs" : []
+                "searchObjs" : [],
             }])
     )
 

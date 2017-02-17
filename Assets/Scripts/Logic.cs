@@ -75,13 +75,23 @@ public class Logic : MonoBehaviour {
         // Env we'll be sending message to
         GameObject curenv = GetEnvGO(Environments, s.envIndex);
 
-        curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
+        // Setup player
+        if(s.playerSpawnIndex >= 0){
+            // Player index of -1 or less implies we dont respawn player. Used for searchfind.
+            curenv.BroadcastMessage("RemovePlayer");
+            curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
+        }
+        GameObject player = GameObject.FindWithTag("Player");
+
+        // Setup trigger object
         curenv.BroadcastMessage("ActivateObjTriggerAtIndex",
                 new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback, s.objShowIndex));
-        curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
+        if(s.showObjAlways){
+            curenv.BroadcastMessage("ShowSelf");
+        }
 
-        // Get player reference
-        GameObject player = GameObject.FindWithTag("Player");
+        // Setup Landmark
+        curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
 
         // Setup logger, using environment info component
         EnvInfo envinfo = (EnvInfo)curenv.GetComponent<EnvInfo>();
@@ -135,7 +145,7 @@ public class Logic : MonoBehaviour {
 
         logger.EndTrial();
 
-        curenv.BroadcastMessage("RemovePlayer");
+        //curenv.BroadcastMessage("RemovePlayer");
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
 

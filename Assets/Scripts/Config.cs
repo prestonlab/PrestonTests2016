@@ -26,6 +26,7 @@ public class Scene {
     public int envIndex; // The environment the player is in
     public float envTime; // The time the player is in the environment
     public int objSpawnIndex; // Index of position object spawns in
+    public bool showObjAlways; // Will the object be billboarded from the start of the scene?
     public int playerSpawnIndex; // Index of position player spawns in
     public int landmarkSpawnIndex; // Index of position landmark spawns in
     
