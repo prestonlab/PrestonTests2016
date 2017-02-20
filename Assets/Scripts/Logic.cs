@@ -29,7 +29,7 @@ public class Logic : MonoBehaviour {
 
     private IEnumerator OnFindTarget(GameObject player){
         print("GOOD JOB U FOUND TARGET");
-        fplayerfoundtarget = false;
+        ResetCallbacks();
         // Freeze controls
         player.SendMessage("DisableInput");
         yield return new WaitForSeconds(globalConfig.pauseTime);
@@ -86,9 +86,10 @@ public class Logic : MonoBehaviour {
         // Setup trigger object
         curenv.BroadcastMessage("ActivateObjTriggerAtIndex",
                 new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback, s.objShowIndex));
-        if(s.showObjAlways){
+        if(s.showObjAlways)
             curenv.BroadcastMessage("ShowSelf");
-        }
+
+        Vector3 objpos = GameObject.FindWithTag("GoalTrigger").transform.position;
 
         // Setup Landmark
         curenv.BroadcastMessage("ShowLandmark", s.landmarkSpawnIndex);
@@ -107,9 +108,13 @@ public class Logic : MonoBehaviour {
         // Check if player found target after the press
         // An ObjTrigger would have used the callback if it existed
 
-        print(String.Format("RunScene(): fplayerfoundtarget: '{0}'", fplayerfoundtarget));
+        // True if the player pressed actionKey on a target
+        bool fplayeractivatetarget = !(Time.time - curtime >= s.envTime) &&
+            (Vector3.Distance(objpos, player.transform.position) <= globalConfig.objTriggerRadius);
 
-        if(fplayerfoundtarget){
+        print(String.Format("RunScene(): fplayerfoundtarget: '{0}'", fplayeractivatetarget));
+
+        if(fplayeractivatetarget){
             print("You found the target without having to be shown it!");
             curenv.BroadcastMessage("ShowSelf");
 
@@ -133,8 +138,12 @@ public class Logic : MonoBehaviour {
             foreach(object o in E.YieldFrom((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards()))
                 yield return o;
 
+            // Reset target
+            ResetCallbacks();
+
             player.SendMessage("EnableInput");
             print("...now go find the target!");
+
 
             yield return new WaitUntil(() => fplayerfoundtarget);
 
@@ -145,7 +154,6 @@ public class Logic : MonoBehaviour {
 
         logger.EndTrial();
 
-        //curenv.BroadcastMessage("RemovePlayer");
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
 
