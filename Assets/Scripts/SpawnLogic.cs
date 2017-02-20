@@ -30,9 +30,13 @@ public class SpawnLogic : MonoBehaviour {
 
     // Kills the player
     void RemovePlayer(){
+        print("SpawnLogic.cs! Remove Player Called!...");
+        print("SpawnLogic.cs!" + (trackedplayer == null ? "null" : trackedplayer.ToString()));
         if(trackedplayer != null){
-            trackedplayer = null;
+            print("SpawnLogic.cs! Destroyed trackedplayer!!!");
+            trackedplayer.SetActive(false);
             Destroy(trackedplayer);
+            trackedplayer = null;
         }
     }
 }
