@@ -14,7 +14,7 @@ public class PlayerAction : MonoBehaviour {
     private FirstPersonController fpscont; // Enable/Disable input
     private CharacterController charcont; // Freeze/Unfreeze player
 
-    void Start(){
+    void Awake(){
         globalConfig = GameObject.Find("Logic").GetComponent<Logic>().globalConfig;
         child = transform.GetChild(0);
         GameObject go = transform.gameObject;
