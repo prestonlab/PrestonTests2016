@@ -30,7 +30,6 @@ public class Logic : MonoBehaviour {
 
     private IEnumerator OnFindTarget(GameObject player){
         print("GOOD JOB U FOUND TARGET");
-        ResetCallbacks();
         yield return new WaitForSeconds(globalConfig.pauseTime);
     }
 
@@ -106,45 +105,42 @@ public class Logic : MonoBehaviour {
         EnvInfo envinfo = (EnvInfo)curenv.GetComponent<EnvInfo>();
         logger.StartTrial(envinfo.GetActiveTriggerObj().transform.position, player, envinfo.GetOrigin());
 
-        //
-        // Specific scene logic
-        //
-
+        // Wait for player to find target
         float curtime = Time.time;
-        yield return new WaitUntil(() => Input.GetKeyDown(globalConfig.actionKey) || Time.time - curtime >= s.envTime);
+        yield return new WaitUntil(() =>
+                (s.showObjAlways ? fplayerfoundtarget : Input.GetKeyDown(globalConfig.actionKey)) ||
+                Time.time - curtime >= s.envTime);
 
         // Freeze player controls
         player.SendMessage("DisableInput");
 
         // Check if player found target after the press
+        bool ffoundtarget = !(Time.time - curtime >= s.envTime) &&
+            s.showObjAlways ?
+                fplayerfoundtarget :
+                (globalConfig.objTriggerRadius >=
+                 Vector2.Distance(Helper.ToVector2(objpos),
+                                  Helper.ToVector2(player.transform.position)));
 
-        // True if the player pressed actionKey on a target
-        bool fplayeractivatetarget = !(Time.time - curtime >= s.envTime) &&
-            (Vector3.Distance(objpos, player.transform.position) <= globalConfig.objTriggerRadius);
+        print(String.Format("RunScene(): ffoundtarget: '{0}'", ffoundtarget));
 
-        print(String.Format("RunScene(): fplayerfoundtarget: '{0}'", fplayeractivatetarget));
+        PlayerAction playerAction = (PlayerAction)player.GetComponent<PlayerAction>();
 
-        if(fplayeractivatetarget){
+        if(ffoundtarget){
             print("You found the target without having to be shown it!");
             curenv.BroadcastMessage("ShowSelf");
 
-            // Freeze player controls
-            player.SendMessage("DisableInput");
-
             // Turn player towards object
-            yield return StartCoroutine((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards());
-            yield return StartCoroutine(OnFindTarget(player));
-
-            curenv.BroadcastMessage("HideSelf");
+            if(!s.showObjAlways)
+                yield return StartCoroutine(playerAction.PlayerLookTowards());
         }else{
             print("You didn't find the target in time. Let me show it to you...");
 
             // Turn the target on! Show the billboarded sprite!
             curenv.BroadcastMessage("ShowSelf");
 
-
             // Turn player towards object
-            yield return StartCoroutine((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards());
+            yield return StartCoroutine(playerAction.PlayerLookTowards());
 
             // Reset target
             ResetCallbacks();
@@ -158,17 +154,21 @@ public class Logic : MonoBehaviour {
 
             // Freeze player controls
             player.SendMessage("DisableInput");
-
-            yield return StartCoroutine(OnFindTarget(player));
-            curenv.BroadcastMessage("HideSelf");
         }
+
+        if(!s.showObjAlways)
+            yield return StartCoroutine(OnFindTarget(player));
+
+        curenv.BroadcastMessage("HideSelf");
 
         logger.EndTrial();
 
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
 
-        yield return StartCoroutine(ShowGrayScreen(0, 0.0f, s.greyScreenTimeTwo));
+        ResetCallbacks();
+
+        yield return StartCoroutine(ShowGrayScreen(-1, 0.0f, s.greyScreenTimeTwo));
 
         print("Scene(): Done");
     }
@@ -200,7 +200,6 @@ public class Logic : MonoBehaviour {
 
     // In environment, obj in the world, go get it, repeat
     public IEnumerator RunScene(Scene s, Logger logger){
-        // Maybe refactor to class with inheritance?
         switch(s.mode){
             case "normal":
                 yield return StartCoroutine(RunNormalScene(s, logger));
@@ -212,6 +211,29 @@ public class Logic : MonoBehaviour {
                 System.Diagnostics.Debug.Assert(false, String.Format("scene mode is invalid: '{0}'", s.mode));
                 return false;
         }
+    }
+
+    public IEnumerator RunAllScenes(Tuple<IEnumerable<Scene>, Logger> tup){
+        // Show the intro screen first
+        yield return StartCoroutine(IntroGreyScreen(IntroGreyScreenTime));
+
+        IEnumerable<Scene> scenes = tup.Item1;
+        Logger logger = tup.Item2;
+        logger.StartPhase(globalConfig.phaseName);
+
+        int counter = 0;
+        foreach(Scene s in scenes){
+            print(String.Format("RunAllScenes(): Running scene number: {0}", counter));
+
+            yield return StartCoroutine(RunScene(s, logger));
+
+            print(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
+            counter += 1;
+        }
+
+        logger.EndPhase();
+
+        print("RunAllScenes(): Done running all scenes!");
     }
 
     IEnumerator IntroGreyScreen(float plusTime){
@@ -229,29 +251,6 @@ public class Logic : MonoBehaviour {
 
         CanvasCoord.SendMessage("HideGray");
         print("IntroGreyScreen(): Disabled grayscreen");
-    }
-
-    public IEnumerator RunAllScenes(Tuple<IEnumerable<Scene>, Logger> tup){
-        // Show the intro screen first
-        yield return StartCoroutine(IntroGreyScreen(IntroGreyScreenTime));
-
-        IEnumerable<Scene> scenes = tup.Item1;
-        Logger logger = tup.Item2;
-        logger.StartPhase(globalConfig.phaseName);
-
-        int counter = 0;
-        foreach(Scene s in scenes){
-            print(String.Format("AllScenes(): Running scene number: {0}", counter));
-
-            yield return StartCoroutine(RunScene(s, logger));
-
-            print(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
-            counter += 1;
-        }
-
-        logger.EndPhase();
-
-        print("AllScenes(): Done running all scenes!");
     }
 
 	void Start(){
