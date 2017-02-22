@@ -13,7 +13,7 @@ public class SearchObj {
 [Serializable]
 public class Scene {
     // How this scene will be used
-    // Can be either: normal, explore, searchfind
+    // Can be either: normal, explore
     public string mode;
     // Index of the object we want to show to the player
     // An object is a 2d rendering of a nondescript, abstract geometric model.
@@ -29,10 +29,6 @@ public class Scene {
     public bool showObjAlways; // Will the object be billboarded from the start of the scene?
     public int playerSpawnIndex; // Index of position player spawns in
     public int landmarkSpawnIndex; // Index of position landmark spawns in
-    
-    // TODO Remove, searchfind is a special case of normal now
-    // For searchfind
-    public SearchObj[] searchObjs; // Sprite and Spawn index of ea obj to find
 }
 
 // Config is a list of scenes and the player's settings

@@ -207,38 +207,6 @@ public class Logic : MonoBehaviour {
     }
 
     // In environment, obj in the world, go get it, repeat
-    public IEnumerator RunSearchFindScene(Scene s, Logger logger){
-        print("SearchFindScene(): Starting");
-
-        // Doesn't have GrayScreen
-
-        GameObject curenv = GetEnvGO(Environments, s.envIndex);
-        curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
-
-        int counter = 0;
-        foreach(SearchObj so in s.searchObjs){
-            print(String.Format("SearchFindScene(): Player looking for target {0}", counter));
-
-            ObjSpawner.TriggerInfo curti = new ObjSpawner.TriggerInfo(so.objSpawnIndex, TriggerCallback, so.objSpriteIndex);
-            print(String.Format("SearchFindScene(): curTriggerInfo: {0}", curti));
-
-            curenv.BroadcastMessage("ActivateObjTriggerAtIndex", curti);
-
-            yield return new WaitUntil(() => fplayerfoundtarget);
-            ResetCallbacks();
-
-            print("SearchFindScene(): Player found target");
-
-            curenv.BroadcastMessage("DeactiveateTriggers");
-
-            counter += 1;
-        }
-
-        curenv.BroadcastMessage("RemovePlayer");
-
-        print("SearchFindScene(): Done");
-    }
-
     public IEnumerator RunScene(Scene s, Logger logger){
         // Maybe refactor to class with inheritance?
         switch(s.mode){
@@ -248,10 +216,6 @@ public class Logic : MonoBehaviour {
                 break;
             case "explore":
                 foreach(object o in E.YieldFrom(RunExploreScene(s, logger)))
-                    yield return o;
-                break;
-            case "searchfind":
-                foreach(object o in E.YieldFrom(RunSearchFindScene(s, logger)))
                     yield return o;
                 break;
             default:

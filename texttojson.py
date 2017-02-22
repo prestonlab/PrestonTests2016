@@ -46,7 +46,6 @@ def parsenormal(lines, infolines, configfunc):
                 "showObjAlways" : info[7] == 1, # Show obj only if value is 1
                 "playerSpawnIndex" : info[8],
                 "landmarkSpawnIndex" : info[9],
-                "searchObjs" : [],
             }
     return prettydumps(configfunc(list(gen())))
 
@@ -64,7 +63,6 @@ def parseexplore(alllines, infolines, configfunc):
                 "showObjAlways" : False,
                 "playerSpawnIndex" : infolines[1],
                 "landmarkSpawnIndex" : -1,
-                "searchObjs" : [],
             }])
     )
 
