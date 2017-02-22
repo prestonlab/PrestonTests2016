@@ -10,6 +10,7 @@ using System.Text;
 using Eppy; // Tuple<T1, T2>
 
 public class Logic : MonoBehaviour {
+    private float IntroGreyScreenTime = 4.0f;
 
     public GameObject Environments = null;
     public GameObject CanvasCoord = null;
@@ -42,22 +43,32 @@ public class Logic : MonoBehaviour {
     // showTime: time we show the object
     // greyScreenTime: time we show the plus
     private IEnumerator ShowGrayScreen(int objShowIndex, float showTime, float greyScreenTime){
+        if(showTime <= 0.0f && greyScreenTime <= 0.0f){
+            // End immediately
+            yield break;
+        }
+
         CanvasCoord.SendMessage("ShowGray");
         print("ShowGrayScreen(): Enabled grayscreen");
 
-        CanvasCoord.SendMessage("ShowImage", objShowIndex);
-        print(String.Format("ShowGrayScreen(): Enabled Image {0}", objShowIndex));
+        if(showTime > 0.0f){
+            CanvasCoord.SendMessage("ShowImage", objShowIndex);
+            print(String.Format("ShowGrayScreen(): Enabled Image {0}", objShowIndex));
 
-        yield return new WaitForSeconds(showTime);
+            yield return new WaitForSeconds(showTime);
 
-        CanvasCoord.SendMessage("HideImage");
-        print(String.Format("ShowGrayScreen(): Disabled Image {0}", objShowIndex));
+            CanvasCoord.SendMessage("HideImage");
+            print(String.Format("ShowGrayScreen(): Disabled Image {0}", objShowIndex));
+        }
 
-        CanvasCoord.SendMessage("ShowPlus");
+        if(greyScreenTime > 0.0f){
+            CanvasCoord.SendMessage("ShowPlus");
 
-        yield return new WaitForSeconds(greyScreenTime);
+            yield return new WaitForSeconds(greyScreenTime);
 
-        CanvasCoord.SendMessage("HidePlus");
+            CanvasCoord.SendMessage("HidePlus");
+        }
+
         CanvasCoord.SendMessage("HideGray");
         print("ShowGrayScreen(): Disabled grayscreen");
     }
@@ -249,7 +260,28 @@ public class Logic : MonoBehaviour {
         }
     }
 
+    IEnumerator IntroGreyScreen(float plusTime){
+        CanvasCoord.SendMessage("ShowGray");
+        print("IntroGreyScreen(): Enabled grayscreen");
+
+        CanvasCoord.SendMessage("ShowPlus");
+
+        print("IntroGreyScreen(): Waiting for '5' key press...");
+        yield return new WaitUntil(() => Input.GetKeyDown("5"));
+        print("IntroGreyScreen(): ...Got it!");
+
+        yield return new WaitForSeconds(plusTime);
+        CanvasCoord.SendMessage("HidePlus");
+
+        CanvasCoord.SendMessage("HideGray");
+        print("IntroGreyScreen(): Disabled grayscreen");
+    }
+
     public IEnumerator RunAllScenes(Tuple<IEnumerable<Scene>, Logger> tup){
+        // Show the intro screen first
+        foreach(object o in E.YieldFrom(IntroGreyScreen(IntroGreyScreenTime)))
+            yield return o;
+
         IEnumerable<Scene> scenes = tup.Item1;
         Logger logger = tup.Item2;
         logger.StartPhase(globalConfig.phaseName);
