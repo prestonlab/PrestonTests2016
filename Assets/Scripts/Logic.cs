@@ -77,8 +77,7 @@ public class Logic : MonoBehaviour {
         print("RunNormalScene(): Starting");
 
         // Show GrayScreen
-        foreach(object o in E.YieldFrom(ShowGrayScreen(s.objShowIndex, s.showTime, s.greyScreenTime)))
-            yield return o;
+        yield return StartCoroutine(ShowGrayScreen(s.objShowIndex, s.showTime, s.greyScreenTime));
 
         // Env we'll be sending message to
         GameObject curenv = GetEnvGO(Environments, s.envIndex);
@@ -133,12 +132,8 @@ public class Logic : MonoBehaviour {
             player.SendMessage("DisableInput");
 
             // Turn player towards object
-            foreach(object o in E.YieldFrom((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards()))
-                yield return o;
-
-
-            foreach(object o in E.YieldFrom(OnFindTarget(player)))
-                yield return o;
+            yield return StartCoroutine((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards());
+            yield return StartCoroutine(OnFindTarget(player));
 
             curenv.BroadcastMessage("HideSelf");
         }else{
@@ -149,8 +144,7 @@ public class Logic : MonoBehaviour {
 
 
             // Turn player towards object
-            foreach(object o in E.YieldFrom((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards()))
-                yield return o;
+            yield return StartCoroutine((player.GetComponent<PlayerAction>() as PlayerAction).PlayerLookTowards());
 
             // Reset target
             ResetCallbacks();
@@ -165,8 +159,7 @@ public class Logic : MonoBehaviour {
             // Freeze player controls
             player.SendMessage("DisableInput");
 
-            foreach(object o in E.YieldFrom(OnFindTarget(player)))
-                yield return o;
+            yield return StartCoroutine(OnFindTarget(player));
             curenv.BroadcastMessage("HideSelf");
         }
 
@@ -175,8 +168,7 @@ public class Logic : MonoBehaviour {
         curenv.BroadcastMessage("DeactiveateTriggers");
         curenv.BroadcastMessage("HideLandmark");
 
-        foreach(object o in E.YieldFrom(ShowGrayScreen(0, 0.0f, s.greyScreenTimeTwo)))
-            yield return o;
+        yield return StartCoroutine(ShowGrayScreen(0, 0.0f, s.greyScreenTimeTwo));
 
         print("Scene(): Done");
     }
@@ -211,12 +203,10 @@ public class Logic : MonoBehaviour {
         // Maybe refactor to class with inheritance?
         switch(s.mode){
             case "normal":
-                foreach(object o in E.YieldFrom(RunNormalScene(s, logger)))
-                    yield return o;
+                yield return StartCoroutine(RunNormalScene(s, logger));
                 break;
             case "explore":
-                foreach(object o in E.YieldFrom(RunExploreScene(s, logger)))
-                    yield return o;
+                yield return StartCoroutine(RunExploreScene(s, logger));
                 break;
             default:
                 System.Diagnostics.Debug.Assert(false, String.Format("scene mode is invalid: '{0}'", s.mode));
@@ -243,8 +233,7 @@ public class Logic : MonoBehaviour {
 
     public IEnumerator RunAllScenes(Tuple<IEnumerable<Scene>, Logger> tup){
         // Show the intro screen first
-        foreach(object o in E.YieldFrom(IntroGreyScreen(IntroGreyScreenTime)))
-            yield return o;
+        yield return StartCoroutine(IntroGreyScreen(IntroGreyScreenTime));
 
         IEnumerable<Scene> scenes = tup.Item1;
         Logger logger = tup.Item2;
@@ -254,8 +243,7 @@ public class Logic : MonoBehaviour {
         foreach(Scene s in scenes){
             print(String.Format("AllScenes(): Running scene number: {0}", counter));
 
-            foreach(object o in E.YieldFrom(RunScene(s, logger)))
-                yield return o;
+            yield return StartCoroutine(RunScene(s, logger));
 
             print(String.Format("RunAllScenes(): Done running scene number: {0}", counter));
             counter += 1;
