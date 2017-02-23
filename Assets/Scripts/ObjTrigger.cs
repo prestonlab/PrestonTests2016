@@ -36,7 +36,6 @@ public class ObjTrigger : MonoBehaviour {
         curcallback = ti.callback;
         if(ti.spriteIndex.HasValue){
             SendMessage("SetSprite", ti.spriteIndex);
-            //rend.enabled = true; // XXX Must be manually enabled, TODO Update searchfind to care about this
         }
     }
 

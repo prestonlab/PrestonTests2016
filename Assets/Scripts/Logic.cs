@@ -10,7 +10,8 @@ using System.Text;
 using Eppy; // Tuple<T1, T2>
 
 public class Logic : MonoBehaviour {
-    private float IntroGreyScreenTime = 4.0f;
+    //private float IntroGreyScreenTime = 4.0f;
+    private float IntroGreyScreenTime = 0.0f;
 
     public GameObject Environments = null;
     public GameObject CanvasCoord = null;
@@ -108,8 +109,9 @@ public class Logic : MonoBehaviour {
         // Wait for player to find target
         float curtime = Time.time;
         yield return new WaitUntil(() =>
-                (s.showObjAlways ? fplayerfoundtarget : Input.GetKeyDown(globalConfig.actionKey)) ||
-                Time.time - curtime >= s.envTime);
+                (s.showObjAlways ?
+                 fplayerfoundtarget :
+                 (Input.GetKeyDown(globalConfig.actionKey) || Time.time - curtime >= s.envTime)));
 
         // Freeze player controls
         player.SendMessage("DisableInput");
