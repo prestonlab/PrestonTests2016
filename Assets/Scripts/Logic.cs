@@ -117,9 +117,9 @@ public class Logic : MonoBehaviour {
 
         // Check if player found target after the press
         bool ffoundtarget = !(Time.time - curtime >= s.envTime) &&
-            s.showObjAlways ?
+            (s.showObjAlways ?
                 fplayerfoundtarget :
-                (globalConfig.objTriggerRadius + player.GetComponent<CharacterController>().radius >=
+                (globalConfig.objTriggerRadius + player.GetComponent<CharacterController>().radius) >=
                  Vector2.Distance(Helper.ToVector2(objpos),
                                   Helper.ToVector2(player.transform.position)));
 
