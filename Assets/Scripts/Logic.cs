@@ -10,8 +10,7 @@ using System.Text;
 using Eppy; // Tuple<T1, T2>
 
 public class Logic : MonoBehaviour {
-    //private float IntroGreyScreenTime = 4.0f;
-    private float IntroGreyScreenTime = 0.0f;
+    private float IntroGreyScreenTime = 4.0f;
 
     public GameObject Environments = null;
     public GameObject CanvasCoord = null;
@@ -93,7 +92,7 @@ public class Logic : MonoBehaviour {
 
         // Setup trigger object
         curenv.BroadcastMessage("ActivateObjTriggerAtIndex",
-                new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback, s.objShowIndex));
+                new ObjSpawner.TriggerInfo(s.objSpawnIndex, TriggerCallback, s.objShowIndex, globalConfig.objTriggerRadius));
         if(s.showObjAlways)
             curenv.BroadcastMessage("ShowSelf");
 
@@ -120,7 +119,7 @@ public class Logic : MonoBehaviour {
         bool ffoundtarget = !(Time.time - curtime >= s.envTime) &&
             s.showObjAlways ?
                 fplayerfoundtarget :
-                (globalConfig.objTriggerRadius >=
+                (globalConfig.objTriggerRadius + player.GetComponent<CharacterController>().radius >=
                  Vector2.Distance(Helper.ToVector2(objpos),
                                   Helper.ToVector2(player.transform.position)));
 
@@ -215,12 +214,10 @@ public class Logic : MonoBehaviour {
         }
     }
 
-    public IEnumerator RunAllScenes(Tuple<IEnumerable<Scene>, Logger> tup){
+    public IEnumerator RunAllScenes(IEnumerable<Scene> scenes, Logger logger){
         // Show the intro screen first
         yield return StartCoroutine(IntroGreyScreen(IntroGreyScreenTime));
 
-        IEnumerable<Scene> scenes = tup.Item1;
-        Logger logger = tup.Item2;
         logger.StartPhase(globalConfig.phaseName);
 
         int counter = 0;
@@ -274,6 +271,6 @@ public class Logic : MonoBehaviour {
         Logger logger = GetComponent<Logger>();
         logger.InitLogger();
 
-        StartCoroutine("RunAllScenes", new Tuple<IEnumerable<Scene>, Logger>(config.scenes, logger));
+        StartCoroutine(RunAllScenes(config.scenes, logger));
 	}
 }

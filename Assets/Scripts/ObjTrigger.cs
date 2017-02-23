@@ -8,6 +8,7 @@ public class ObjTrigger : MonoBehaviour {
 
     public void SetInfo(ObjSpawner.TriggerInfo ti){
         curcallback = ti.callback;
+        GetComponent<SphereCollider>().radius = ti.triggerRadius;
         if(ti.spriteIndex.HasValue){
             BroadcastMessage("SetSprite", ti.spriteIndex);
         }
