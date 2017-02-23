@@ -10,12 +10,6 @@ public class Logger : MonoBehaviour {
 	//Highest level tag settings
 	//
 	
-	//Which run is this?
-	public int RunNumber = -1;
-
-	//Name of subject
-	public string SubjectName = "name not assigned";
-	
 	//Version number
 	public string VersionString = "1.0";
 
@@ -125,6 +119,11 @@ public class Logger : MonoBehaviour {
         logCoro = null;
 	}
 
+    // Log when player presses action
+    public void WriteAction(string actionval){
+        WriteFrame("action", actionval);
+    }
+
     // Phase controls
     // Phases wrap all trials
 
@@ -141,9 +140,9 @@ public class Logger : MonoBehaviour {
 	//
 
 	//Log the state of the current frame
-	private void WriteFrame(){
+	private void WriteFrame(string name, string extraAttrib=null){
 		//Writing this frame...
-		m_writer.WriteStartElement("frame");
+		m_writer.WriteStartElement(name);
 
 		//This is our relevant data:
 		//
@@ -153,12 +152,15 @@ public class Logger : MonoBehaviour {
 		m_writer.WriteAttributeString("timestamp", Time.time.ToString());
 		m_writer.WriteAttributeString("x", (t.position.x - relativeOrigin.x).ToString());
 		m_writer.WriteAttributeString("y", (t.position.z - relativeOrigin.z).ToString());
+        if(extraAttrib != null){
+            m_writer.WriteAttributeString("result", extraAttrib);
+        }
 
 		//Done!
 		m_writer.WriteEndElement();
 	}
 
-	public void InitLogger(){
+	public void InitLogger(string subjectName){
 		//Xml
 		//
 
@@ -171,8 +173,7 @@ public class Logger : MonoBehaviour {
 
 		//Add some high level information
 		m_writer.WriteStartElement("run");
-		m_writer.WriteAttributeString("number", RunNumber.ToString());
-		m_writer.WriteAttributeString("subject", SubjectName);
+		m_writer.WriteAttributeString("subject", subjectName);
 		m_writer.WriteAttributeString("version", VersionString);
 	}
 
@@ -188,7 +189,7 @@ public class Logger : MonoBehaviour {
     public IEnumerator WaitAndWriteFrame(float waitTime){
         while(true){
             yield return new WaitForSeconds(waitTime);
-            WriteFrame();
+            WriteFrame("frame");
         }
     }
 

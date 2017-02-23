@@ -25,6 +25,7 @@ public class Scene {
 
     public int envIndex; // The environment the player is in
     public float envTime; // The time the player is in the environment
+    public float envTimeTwo; // The time the player is in the environment after seeing object
     public int objSpawnIndex; // Index of position object spawns in
     public bool showObjAlways; // Will the object be billboarded from the start of the scene?
     public int playerSpawnIndex; // Index of position player spawns in
@@ -40,7 +41,7 @@ public class Config {
     public float lookSlerpTime;
     public float pauseTime;
     public string phaseName;
-    public int subjectNumber;
+    public string subjectName;
     public float playerMoveSpeed;
     public float objTriggerRadius;
     public string actionKey; // String of key for player to press to input an action. http://answers.unity3d.com/questions/762073/c-list-of-string-name-for-inputgetkeystring-name.html

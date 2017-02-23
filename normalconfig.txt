@@ -11,13 +11,14 @@ space
 0 4 3 3 3
 0 0 0 0 0
 100 100 5 5 5
+100 100 5 5 5
 1 2 3 0 1
 1 1 0 0 0
-0 -1 0 1 2
+6 -1 0 1 2
 3 2 0 2 1
 
 Line 1: Mode, this line determines the other lines
-Line 2: Subject Number, int
+Line 2: Subject Name, string
 Line 3: Player move speed, float
 Line 4: Object trigger radius, float
 Line 5: Time player can't input after discovering object, float, seconds
@@ -29,7 +30,8 @@ Line 10: List of float, time grey screen is shown to player, in seconds
 Line 11: List of float, time second grey screen is shown to player, in seconds
 Line 12: List of environment indicies
 Line 13: List of float for max time in in environment, in seconds
-Line 14: List of indicies in environment where object will spawn
-Line 15: List of bools (1 or 0) deciding if object will always be shown or not. 1 means to show the object, any other value means not to.
-Line 16: List of indicies in environment where player will spawn, -1 means player will not be respawned
-Line 17: List of indicies in environment where landmark will spawn
+Line 14: List of float for max time in in environment after seeing object, in seconds
+Line 15: List of indicies in environment where object will spawn
+Line 16: List of bools (1 or 0) deciding if object will always be shown or not. 1 means to show the object, any other value means not to.
+Line 17: List of indicies in environment where player will spawn, -1 means player will not be respawned
+Line 18: List of indicies in environment where landmark will spawn

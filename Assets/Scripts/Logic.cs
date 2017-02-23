@@ -7,8 +7,6 @@ using System;
 using System.IO;
 using System.Text;
 
-using Eppy; // Tuple<T1, T2>
-
 public class Logic : MonoBehaviour {
     private float IntroGreyScreenTime = 4.0f;
 
@@ -112,6 +110,11 @@ public class Logic : MonoBehaviour {
                  fplayerfoundtarget :
                  (Input.GetKeyDown(globalConfig.actionKey) || Time.time - curtime >= s.envTime)));
 
+        bool ftimedout = Time.time - curtime >= s.envTime;
+
+        // Log player doing action/timing out
+        logger.WriteAction(ftimedout ? "timeout" : "action");
+
         // Freeze player controls
         player.SendMessage("DisableInput");
 
@@ -151,7 +154,8 @@ public class Logic : MonoBehaviour {
 
             print("...now go find the target!");
 
-            yield return new WaitUntil(() => fplayerfoundtarget);
+            float curtimetwo = Time.time;
+            yield return new WaitUntil(() => fplayerfoundtarget || Time.time - curtimetwo >= s.envTimeTwo);
 
             // Freeze player controls
             player.SendMessage("DisableInput");
@@ -233,6 +237,8 @@ public class Logic : MonoBehaviour {
         logger.EndPhase();
 
         print("RunAllScenes(): Done running all scenes!");
+
+        Application.Quit();
     }
 
     IEnumerator IntroGreyScreen(float plusTime){
@@ -269,7 +275,7 @@ public class Logic : MonoBehaviour {
 
         // Setup logger
         Logger logger = GetComponent<Logger>();
-        logger.InitLogger();
+        logger.InitLogger(globalConfig.subjectName);
 
         StartCoroutine(RunAllScenes(config.scenes, logger));
 	}

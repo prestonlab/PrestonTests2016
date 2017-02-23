@@ -5,12 +5,12 @@ explore
 0.5
 2.0
 space
-1
+2
 3
 10
 
 Line 1: Mode, this line determines the other lines
-Line 2: Subject Number, int
+Line 2: Subject Name, string
 Line 3: Player move speed, float
 Line 4: Object trigger radius, float
 Line 5: Time player can't input after discovering object, float, seconds (unused)

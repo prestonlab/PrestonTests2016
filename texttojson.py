@@ -13,11 +13,11 @@ def prettydumps(obj):
 def toints(line):
     return (int(i) for i in line.split(" "))
 
-def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime):
+def createconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime):
     return {
             "scenes" : list(scenes),
             "phaseName": phaseName,
-            "subjectNumber": subjectNumber,
+            "subjectName": subjectName,
             "playerMoveSpeed": playerMoveSpeed,
             "objTriggerRadius": objTriggerRadius,
             "actionKey": actionKey,
@@ -25,15 +25,15 @@ def createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, ac
             "lookSlerpTime": lookSlerpTime,
     }
 
-def createcreateconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, pauseTime, lookSlerpTime, actionKey):
+def createcreateconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius, pauseTime, lookSlerpTime, actionKey):
     """Returns a function that only needs a list of scenes to create the config"""
     def f(scenes):
-        return createconfig(phaseName, subjectNumber, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime)
+        return createconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime)
     return f
 
 def parsenormal(lines, infolines, configfunc):
     def gen():
-        for info in map(list, zip(*map(toints, lines[7:16+1]))): # Grabbing ea column in text file
+        for info in map(list, zip(*map(toints, lines[7:17+1]))): # Grabbing ea column in text file
             yield {
                 "mode": "normal",
                 "objShowIndex" : info[0],
@@ -42,10 +42,11 @@ def parsenormal(lines, infolines, configfunc):
                 "greyScreenTimeTwo" : info[3],
                 "envIndex" : info[4],
                 "envTime" : info[5],
-                "objSpawnIndex" : info[6],
-                "showObjAlways" : info[7] == 1, # Show obj only if value is 1
-                "playerSpawnIndex" : info[8],
-                "landmarkSpawnIndex" : info[9],
+                "envTimeTwo" : info[6],
+                "objSpawnIndex" : info[7],
+                "showObjAlways" : info[8] == 1, # Show obj only if value is 1
+                "playerSpawnIndex" : info[9],
+                "landmarkSpawnIndex" : info[10],
             }
     return prettydumps(configfunc(list(gen())))
 
@@ -59,6 +60,7 @@ def parseexplore(alllines, infolines, configfunc):
                 "greyScreenTimeTwo" : -1,
                 "envIndex" : infolines[0],
                 "envTime" : infolines[2],
+                "envTimeTwo" : -1,
                 "objSpawnIndex" : -1,
                 "showObjAlways" : False,
                 "playerSpawnIndex" : infolines[1],
