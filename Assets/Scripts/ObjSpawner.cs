@@ -31,7 +31,7 @@ public class ObjSpawner : MonoBehaviour {
     }
 
     public void DeactiveateTriggers(){
-        lastactivated.SendMessage("ClearInfo");
+        lastactivated.BroadcastMessage("ClearInfo");
         lastactivated = null;
     }
 }
