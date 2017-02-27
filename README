@@ -4,71 +4,7 @@ A Python tool is provided for converting text files to the config.json variant. 
 takes a files as its first argument and outputs the config.json through
 stdout.
 usage:
-    texttojson.py normalconfig.txt > config.json
+    python3 texttojson.py normalconfig.txt > config.json
 
-Three example text config files exist: normalconfig.txt, searchfindconfig.txt, explore.txt.
-They should have nice comments explaining what they do at the bottom. The line
-numbers in use should not be modified, its really sensitive.
-
-This is all a TODO list...
-
-:) 11/3/16
-No cones in inf plane, just "objects"
-Different colors for mountains in ea place w/ hills
-    Mountains
-        Blue, Yellow, Pink, Teal
-    Desert
-        Red, Orange, Green, Purple
-    Very saturated
-
-Desert should be square, not circle
-
-Movement from end to end is ~10 seconds
-
-
-See grey screen for X seconds with object on screen
-    Object is specifiable
-See grey screen for Y seconds with plus sign
-Enter environment at a spawn, for at most Z seconds
-    Chooseable:
-        Object spawn position
-        Spawn pos of player
-        Which of the 4 landmarks are active
-On timeout OR wrong Trigger Action
-    Turn player slowly towards real object spawn
-    Billboard object to player
-    They have inf time to walk into the spawn to go to next scene
-On find object
-    Show object on screen as confirm, with configurable time for the object
-
-Alt modes--
-Placed in environment where they can explore for 2-3 mins, no objects.
-In environment, obj in the world, go collide with it, repeat
-
-
-ADD Subject numbre as top line :)
-ADD Player movement speed :)
-ADD Collision sphere size :)
-Make yellow more yellow, pink more pink :)
-
-:) This week: 1/23/17
-Talktime: 40 mins
-:) Allow key for action to be specified, instead of space
-    -- look at unity list of keys in string form, let the string name of key
-    be placed in config file
-:) Change black screen after run to grey screen with plus from before, add
-time paramater for it.
-:) Individualy configurable times for grey screen
-:) Correct normal mode
-:) Fix landmark positions
-    -- you got a piece of paper for it, and an email
-    -- keep the triggers in the arbitrary weird order they're in, where they
-    cross quadrants
-:) Configure billboard time (lookslerptime)
-:) Allow searchfind segments to be interspersed with normal mode segments
-    -- allow for disabling of player despawning. A searchfind segment just
-    means player doesnt despawn, no greyscreen is shown, and object is always
-    billboarded. -1 env or player spawn could me don't despawn
-:) Add landmark location param to searchfind config
-
-TODO Add the smily guys as the sprites, in the email from 11/22/16
+Two example text config files exist: normalconfig.txt and exploreconfig.txt.
+They should have nice comments explaining what they do at the bottom.
