@@ -213,8 +213,8 @@ public class Logic : MonoBehaviour {
                 yield return StartCoroutine(RunExploreScene(s, logger));
                 break;
             default:
-                System.Diagnostics.Debug.Assert(false, String.Format("scene mode is invalid: '{0}'", s.mode));
-                return false;
+                System.Diagnostics.Debug.Assert (false, String.Format ("scene mode is invalid: '{0}'", s.mode));
+                break;
         }
     }
 
@@ -258,7 +258,7 @@ public class Logic : MonoBehaviour {
         print("IntroGreyScreen(): Disabled grayscreen");
     }
 
-	void Start(){
+    void Start(){
         // Read Json file to configure stuff
         //
 
@@ -278,5 +278,5 @@ public class Logic : MonoBehaviour {
         logger.InitLogger(globalConfig.subjectName);
 
         StartCoroutine(RunAllScenes(config.scenes, logger));
-	}
+    }
 }
