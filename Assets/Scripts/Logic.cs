@@ -70,6 +70,10 @@ public class Logic : MonoBehaviour {
         print("ShowGrayScreen(): Disabled grayscreen");
     }
 
+    //
+    // Scene logics
+    //
+
     public IEnumerator RunNormalScene(Scene s, Logger logger){
         print("RunNormalScene(): Starting");
 
@@ -82,7 +86,7 @@ public class Logic : MonoBehaviour {
         // Setup player
         if(s.playerSpawnIndex >= 0){
             // Player index of -1 or less implies we dont respawn player. Used for searchfind.
-            curenv.BroadcastMessage("RemovePlayer");
+            Environments.BroadcastMessage("RemovePlayer");
             curenv.BroadcastMessage("SpawnPlayerAtIndex", s.playerSpawnIndex);
         }
         GameObject player = GameObject.FindWithTag("Player");
