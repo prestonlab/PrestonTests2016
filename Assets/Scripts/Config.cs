@@ -28,6 +28,8 @@ public class Scene {
     public float envTimeTwo; // The time the player is in the environment after seeing object
     public int objSpawnIndex; // Index of position object spawns in
     public bool showObjAlways; // Will the object be billboarded from the start of the scene?
+    public float panTime; // How long it takes for the player to look down, 0.0 implies disabled
+    public int countSeconds; // How many seconds we count down from, 0 implies disabled
     public int playerSpawnIndex; // Index of position player spawns in
     public int landmarkSpawnIndex; // Index of position landmark spawns in
 }

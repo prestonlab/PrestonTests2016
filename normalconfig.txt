@@ -12,8 +12,10 @@ space
 0 0 0 0 0
 100 100 5 5 5
 100 100 5 5 5
-1 2 3 0 1
-1 1 0 0 0
+0 2 3 0 1
+0 0 0 0 0
+3 0 0 0 0
+5 0 0 0 0
 6 -1 0 1 2
 3 2 0 2 1
 
@@ -33,5 +35,7 @@ Line 13: List of float for max time in in environment, in seconds
 Line 14: List of float for max time in in environment after seeing object, in seconds
 Line 15: List of indicies in environment where object will spawn
 Line 16: List of bools (1 or 0) deciding if object will always be shown or not. 1 means to show the object, any other value means not to.
-Line 17: List of indicies in environment where player will spawn, -1 means player will not be respawned
-Line 18: List of indicies in environment where landmark will spawn
+Line 17: List of float for time to pan camera up/down
+Line 18: List of (whole number of seconds, ie int) to count down from, 0 implies disabled
+Line 19: List of indicies in environment where player will spawn, -1 means player will not be respawned
+Line 20: List of indicies in environment where landmark will spawn

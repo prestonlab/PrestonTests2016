@@ -45,4 +45,15 @@ public class CanvasCoord : MonoBehaviour {
     public void HidePlus(){
         plusGo.SetActive(false);
     }
+
+    // Text
+    public GameObject textGo = null;
+    public void ShowText(string str){
+        textGo.SetActive(true);
+        textGo.GetComponent<Text>().text = str;
+    }
+    
+    public void HideText(){
+        textGo.SetActive(false);
+    }
 }

@@ -22,20 +22,31 @@ public class PlayerAction : MonoBehaviour {
         charcont = (CharacterController)go.GetComponent<CharacterController>();
     }
 
+
     // Coroutines
+    public IEnumerator ViewSlerp(Quaternion end, float time, Transform[] transforms) {
+        // Slerps between current look direction and end over time, set rotations of the transforms in transforms
+        Quaternion initrot = transform.rotation;
+        float inittime = Time.time;
+        while(Time.time - inittime < time){
+            float prop = (Time.time - inittime) / time;
+            Quaternion newrot = Quaternion.Slerp(initrot, end, prop);
+            foreach(Transform t in transforms)
+                t.rotation = newrot;
+            yield return null;
+        }
+    }
+
     public IEnumerator PlayerLookTowards(){
         Vector3 goalpos = GameObject.FindWithTag("GoalTrigger").transform.position - transform.position;
         Quaternion goalrot = Quaternion.LookRotation(goalpos);
         Quaternion goalrotflat = Quaternion.Euler(0, goalrot.eulerAngles.y, 0);
+        yield return StartCoroutine(ViewSlerp(goalrotflat, globalConfig.lookSlerpTime, new Transform[]{transform, child}));
+    }
 
-        Quaternion initrot = transform.rotation;
-        float curtime = Time.time;
-        while(Time.time - curtime < globalConfig.lookSlerpTime){
-            float prop = (Time.time - curtime) / globalConfig.lookSlerpTime;
-            transform.rotation = Quaternion.Slerp(initrot, goalrotflat, prop);
-            child.rotation = Quaternion.Slerp(initrot, goalrotflat, prop);
-            yield return null;
-        }
+    public IEnumerator Pan(float time, float angle){
+        Quaternion goalrot = Quaternion.Euler(angle, transform.rotation.eulerAngles.y, 0);
+        yield return StartCoroutine(ViewSlerp(goalrot, time, new Transform[]{transform, child}));
     }
 
     // Messages

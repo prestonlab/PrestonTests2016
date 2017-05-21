@@ -11,7 +11,7 @@ def prettydumps(obj):
     return json.dumps(obj, indent=4)
 
 def toints(line):
-    return (int(i) for i in line.split(" "))
+    return map(int, line.split(" "))
 
 def createconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime):
     return {
@@ -33,7 +33,7 @@ def createcreateconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius
 
 def parsenormal(lines, infolines, configfunc):
     def gen():
-        for info in map(list, zip(*map(toints, lines[7:17+1]))): # Grabbing ea column in text file
+        for info in map(list, zip(*map(toints, lines[7:19+1]))): # Grabbing ea column in text file
             yield {
                 "mode": "normal",
                 "objShowIndex" : info[0],
@@ -45,8 +45,10 @@ def parsenormal(lines, infolines, configfunc):
                 "envTimeTwo" : info[6],
                 "objSpawnIndex" : info[7],
                 "showObjAlways" : info[8] == 1, # Show obj only if value is 1
-                "playerSpawnIndex" : info[9],
-                "landmarkSpawnIndex" : info[10],
+                "panTime" : info[9],
+                "countSeconds" : info[10],
+                "playerSpawnIndex" : info[11],
+                "landmarkSpawnIndex" : info[12],
             }
     return prettydumps(configfunc(list(gen())))
 
@@ -65,6 +67,9 @@ def parseexplore(alllines, infolines, configfunc):
                 "showObjAlways" : False,
                 "playerSpawnIndex" : infolines[1],
                 "landmarkSpawnIndex" : -1,
+                "panTime" : 0.0,
+                "countSeconds" : 0,
+                "playerSpawnIndex" : -1,
             }])
     )
 

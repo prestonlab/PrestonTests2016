@@ -26,11 +26,6 @@ public class Logic : MonoBehaviour {
         fplayerfoundtarget = true;
     }
 
-    private IEnumerator OnFindTarget(GameObject player){
-        print("GOOD JOB U FOUND TARGET");
-        yield return new WaitForSeconds(globalConfig.pauseTime);
-    }
-
     // Helper
     private GameObject GetEnvGO(GameObject environments, int envIndex){
         return environments.transform.GetChild(envIndex).gameObject;
@@ -68,6 +63,16 @@ public class Logic : MonoBehaviour {
 
         CanvasCoord.SendMessage("HideGray");
         print("ShowGrayScreen(): Disabled grayscreen");
+    }
+
+    public IEnumerator CountDown(int start){
+        int curnum = start;
+        while(curnum >= 0){
+            CanvasCoord.SendMessage("ShowText", curnum.ToString());
+            yield return new WaitForSeconds(1.0f);
+            curnum -= 1;
+        }
+        CanvasCoord.SendMessage("HideText");
     }
 
     //
@@ -165,10 +170,22 @@ public class Logic : MonoBehaviour {
             player.SendMessage("DisableInput");
         }
 
-        if(!s.showObjAlways)
-            yield return StartCoroutine(OnFindTarget(player));
+        if(!s.showObjAlways) {
+            // Pan down
+            print("GOOD JOB U FOUND TARGET" + String.Format(" pausing for {0} secs", globalConfig.pauseTime));
+            if(s.panTime > 0.0)
+                yield return StartCoroutine(playerAction.Pan(s.panTime, 90));
+        }
 
         curenv.BroadcastMessage("HideSelf");
+
+        if(!s.showObjAlways) {
+            // Count down, pan up
+            if(s.countSeconds > 0)
+                yield return StartCoroutine(CountDown(s.countSeconds));
+            if(s.panTime > 0.0)
+                yield return StartCoroutine(playerAction.Pan(s.panTime, 0));
+        }
 
         logger.EndTrial();
 
