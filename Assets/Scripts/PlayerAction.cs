@@ -24,9 +24,9 @@ public class PlayerAction : MonoBehaviour {
 
 
     // Coroutines
-    public IEnumerator ViewSlerp(Quaternion end, float time, Transform[] transforms) {
+    public IEnumerator ViewSlerp(Quaternion start, Quaternion end, float time, Transform[] transforms) {
         // Slerps between current look direction and end over time, set rotations of the transforms in transforms
-        Quaternion initrot = transform.rotation;
+        Quaternion initrot = start;
         float inittime = Time.time;
         while(Time.time - inittime < time){
             float prop = (Time.time - inittime) / time;
@@ -41,12 +41,12 @@ public class PlayerAction : MonoBehaviour {
         Vector3 goalpos = GameObject.FindWithTag("GoalTrigger").transform.position - transform.position;
         Quaternion goalrot = Quaternion.LookRotation(goalpos);
         Quaternion goalrotflat = Quaternion.Euler(0, goalrot.eulerAngles.y, 0);
-        yield return StartCoroutine(ViewSlerp(goalrotflat, globalConfig.lookSlerpTime, new Transform[]{transform, child}));
+        yield return StartCoroutine(ViewSlerp(transform.rotation, goalrotflat, globalConfig.lookSlerpTime, new Transform[]{transform, child}));
     }
 
     public IEnumerator Pan(float time, float angle){
         Quaternion goalrot = Quaternion.Euler(angle, transform.rotation.eulerAngles.y, 0);
-        yield return StartCoroutine(ViewSlerp(goalrot, time, new Transform[]{transform, child}));
+        yield return StartCoroutine(ViewSlerp(child.rotation, goalrot, time, new Transform[]{child}));
     }
 
     // Messages
