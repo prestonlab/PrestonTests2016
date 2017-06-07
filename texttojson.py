@@ -33,7 +33,7 @@ def createcreateconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius
 
 def parsenormal(lines, infolines, configfunc):
     def gen():
-        for info in map(tuple, zip(*map(tofloats, lines[7:17+1]))): # Grabbing ea column in text file
+        for info in map(tuple, zip(*map(tofloats, lines[7:19+1]))): # Grabbing ea column in text file
             yield {
                 "mode": "normal",
                 "objShowIndex" : int(info[0]),

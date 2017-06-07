@@ -170,22 +170,18 @@ public class Logic : MonoBehaviour {
             player.SendMessage("DisableInput");
         }
 
-        if(!s.showObjAlways) {
-            // Pan down
-            print("GOOD JOB U FOUND TARGET" + String.Format(" pausing for {0} secs", globalConfig.pauseTime));
-            if(s.panTime > 0.0)
-                yield return StartCoroutine(playerAction.Pan(s.panTime, 90));
-        }
+	// Pan down
+	print("GOOD JOB U FOUND TARGET" + String.Format(" pausing for {0} secs", globalConfig.pauseTime));
+	if(s.panTime > 0.0)
+	    yield return StartCoroutine(playerAction.Pan(s.panTime, 90));
 
         curenv.BroadcastMessage("HideSelf");
 
-        if(!s.showObjAlways) {
-            // Count down, pan up
-            if(s.countSeconds > 0)
-                yield return StartCoroutine(CountDown(s.countSeconds));
-            if(s.panTime > 0.0)
-                yield return StartCoroutine(playerAction.Pan(s.panTime, 0));
-        }
+	// Count down, pan up
+	if(s.countSeconds > 0)
+	    yield return StartCoroutine(CountDown(s.countSeconds));
+	if(s.panTime > 0.0)
+	    yield return StartCoroutine(playerAction.Pan(s.panTime, 0));
 
         logger.EndTrial();
 
