@@ -10,8 +10,8 @@ def eprint(*args, **kwargs):
 def prettydumps(obj):
     return json.dumps(obj, indent=4)
 
-def toints(line):
-    return map(int, line.split(" "))
+def tofloats(line):
+    return map(float, line.split(" "))
 
 def createconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius, actionKey, scenes, pauseTime, lookSlerpTime):
     return {
@@ -33,22 +33,22 @@ def createcreateconfig(phaseName, subjectName, playerMoveSpeed, objTriggerRadius
 
 def parsenormal(lines, infolines, configfunc):
     def gen():
-        for info in map(list, zip(*map(toints, lines[7:19+1]))): # Grabbing ea column in text file
+        for info in map(tuple, zip(*map(tofloats, lines[7:17+1]))): # Grabbing ea column in text file
             yield {
                 "mode": "normal",
-                "objShowIndex" : info[0],
+                "objShowIndex" : int(info[0]),
                 "showTime" : info[1],
                 "greyScreenTime" : info[2],
                 "greyScreenTimeTwo" : info[3],
-                "envIndex" : info[4],
+                "envIndex" : int(info[4]),
                 "envTime" : info[5],
                 "envTimeTwo" : info[6],
-                "objSpawnIndex" : info[7],
-                "showObjAlways" : info[8] == 1, # Show obj only if value is 1
+                "objSpawnIndex" : int(info[7]),
+                "showObjAlways" : int(info[8] == 1), # Show obj only if value is 1
                 "panTime" : info[9],
-                "countSeconds" : info[10],
-                "playerSpawnIndex" : info[11],
-                "landmarkSpawnIndex" : info[12],
+                "countSeconds" : int(info[10]),
+                "playerSpawnIndex" : int(info[11]),
+                "landmarkSpawnIndex" : int(info[12]),
             }
     return prettydumps(configfunc(list(gen())))
 
@@ -74,7 +74,7 @@ def parseexplore(alllines, infolines, configfunc):
     )
 
 if __name__ == "__main__":
-    def err(lines):
+    def err(lines, *args):
         eprint("'{}' is not a recognized mode".format(lines[0]))
 
     handlers = {
