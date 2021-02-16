@@ -11,14 +11,14 @@ public class PlayerAction : MonoBehaviour {
 
     private Transform child;
 
-    private FirstPersonController fpscont; // Enable/Disable input
+    private SimpleMovement fpscont; // Enable/Disable input
     private CharacterController charcont; // Freeze/Unfreeze player
 
     void Awake(){
         globalConfig = GameObject.Find("Logic").GetComponent<Logic>().globalConfig;
         child = transform.GetChild(0);
         GameObject go = transform.gameObject;
-        fpscont = (FirstPersonController)go.GetComponent<FirstPersonController>();
+        fpscont = (SimpleMovement)go.GetComponent<SimpleMovement>();
         charcont = (CharacterController)go.GetComponent<CharacterController>();
     }
 
