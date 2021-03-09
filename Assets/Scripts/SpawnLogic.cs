@@ -26,6 +26,8 @@ public class SpawnLogic : MonoBehaviour {
         Debug.Assert(trackedplayer == null);
         Transform loc = spawnLocs[index];
         trackedplayer = ((Transform)Instantiate(playergo, loc.position, loc.rotation)).gameObject;
+		// Simple movement fix?
+		trackedplayer.SetActive(true);
     }
 
     // Kills the player
