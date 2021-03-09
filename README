@@ -1,6 +1,6 @@
 Branches: master (Unity 5.5.1f1), simple-movement (Unity 2018.4.29f1), panlook (Unity 2018.4.29f1), panlook-simple-movement (Unity 2018.4.29f1)
 
-Master—original movement, no panlook.
+master—original movement, no panlook.
 
 config.json is required to exist in this folder.
 temp.xml will be created, or overwritten if it exists. It contains logging information.
