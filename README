@@ -1,5 +1,7 @@
 Branches: master (Unity 5.5.1f1), simple-movement (Unity 2018.4.29f1), panlook (Unity 2018.4.29f1), panlook-simple-movement (Unity 2018.4.29f1)
 
+panlook: from brockuniera:panlook, adds head turning during certain holds.
+
 config.json is required to exist in this folder.
 temp.xml will be created, or overwritten if it exists. It contains logging information.
 A Python tool is provided for converting text files to the config.json variant. It
