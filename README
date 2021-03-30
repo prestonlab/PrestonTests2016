@@ -1,4 +1,4 @@
-Branches: master (Unity 5.5.1f1), simple-movement (Unity 2018.4.29f1), panlook (Unity 2018.4.29f1), panlook-simple-movement (Unity 2018.4.29f1)
+Branches: master (Unity 5.5.1f1), simple-movement (Unity 2018.4.29f1), panlook (Unity 5.6.1f1), panlook-simple-movement (Unity 2018.4.29f1)
 
 master: from brockuniera:master, original movement, no panlook.
 
