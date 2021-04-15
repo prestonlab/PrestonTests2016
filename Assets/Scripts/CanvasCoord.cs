@@ -25,11 +25,11 @@ public class CanvasCoord : MonoBehaviour {
         Debug.Log(String.Format("ShowImage called w/ index {0}", index));
 
         // Load and build Sprite from a texture in Resources folder
-        //Sprite sprite = Resources.Load<Sprite>(index.ToString());
+        Sprite sprite = Resources.Load<Sprite>(index.ToString());
 
         // Activate GO and assign sprite
         imageGo.SetActive(true);
-        imageComp.material.mainTexture = (Texture)Resources.Load(index.ToString());
+		imageComp.sprite = sprite;
     }
 
     public void HideImage(){
