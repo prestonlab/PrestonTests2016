@@ -76,7 +76,7 @@
             "showTime": 2,
             "greyScreenTime": 2,
             "greyScreenTimeTwo": 2,
-            "envIndex": 0,
+            "envIndex": 1,
             "envTime": 60,
             "envTimeTwo": 20,
             "objSpawnIndex": 5,
